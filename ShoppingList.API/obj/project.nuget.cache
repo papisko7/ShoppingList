@@ -1,0 +1,21 @@
+{
+  "version": 2,
+  "dgSpecHash": "cae1WlUfidI=",
+  "success": true,
+  "projectFilePath": "D:\\Sources\\ShoppingList\\ShoppingList.API\\ShoppingList.API.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\kacperkowalski\\.nuget\\packages\\microsoft.aspnetcore.openapi\\9.0.10\\microsoft.aspnetcore.openapi.9.0.10.nupkg.sha512",
+    "C:\\Users\\kacperkowalski\\.nuget\\packages\\microsoft.openapi\\1.6.17\\microsoft.openapi.1.6.17.nupkg.sha512"
+  ],
+  "logs": [
+    {
+      "code": "NU1900",
+      "level": "Warning",
+      "message": "Error occurred while getting package vulnerability data: Unable to load the service index for source https://teamcity.metapack.net/httpAuth/app/nuget/feed/_Root/TeamcityLocalNugetServer/v3/index.json.",
+      "projectPath": "D:\\Sources\\ShoppingList\\ShoppingList.API\\ShoppingList.API.csproj",
+      "warningLevel": 1,
+      "filePath": "D:\\Sources\\ShoppingList\\ShoppingList.API\\ShoppingList.API.csproj",
+      "targetGraphs": []
+    }
+  ]
+}
