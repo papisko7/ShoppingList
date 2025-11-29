@@ -1,4 +1,4 @@
-﻿namespace ShoppingList.Data.Entities
+﻿namespace ShoppingList.Data.Entities.Login
 {
 	public class Token
 	{
