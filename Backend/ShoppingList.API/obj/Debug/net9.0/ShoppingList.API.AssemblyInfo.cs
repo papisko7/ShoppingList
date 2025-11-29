@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("ShoppingList.API")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+abadabf99db6f34adfd0e65235728ed4412f8c32")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+feae02134bc4330f39a2032f6317a25d2ffd2e95")]
 [assembly: System.Reflection.AssemblyProductAttribute("ShoppingList.API")]
 [assembly: System.Reflection.AssemblyTitleAttribute("ShoppingList.API")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

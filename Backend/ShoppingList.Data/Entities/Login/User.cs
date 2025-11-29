@@ -1,4 +1,4 @@
-﻿namespace ShoppingList.Data.Entities
+﻿namespace ShoppingList.Data.Entities.Login
 {
 	public class User
 	{
@@ -9,6 +9,8 @@
 		public string PasswordHash { get; set; }
 
 		public DateTime CreatedAt { get; set; }
+
+		public ICollection<GroupMember> GroupMembers { get; set; }
 
 		public ICollection<Token> Tokens { get; set; } = new List<Token>();
 	}

@@ -1,23 +1,23 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\kacperkowalski\\source\\repos\\ShoppingList\\Backend\\ShoppingList.API\\ShoppingList.API.csproj": {}
+    "C:\\Users\\kkowa\\Source\\Repos\\ShoppingList\\Backend\\ShoppingList.API\\ShoppingList.API.csproj": {}
   },
   "projects": {
-    "C:\\Users\\kacperkowalski\\source\\repos\\ShoppingList\\Backend\\ShoppingList.API\\ShoppingList.API.csproj": {
+    "C:\\Users\\kkowa\\Source\\Repos\\ShoppingList\\Backend\\ShoppingList.API\\ShoppingList.API.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\kacperkowalski\\source\\repos\\ShoppingList\\Backend\\ShoppingList.API\\ShoppingList.API.csproj",
+        "projectUniqueName": "C:\\Users\\kkowa\\Source\\Repos\\ShoppingList\\Backend\\ShoppingList.API\\ShoppingList.API.csproj",
         "projectName": "ShoppingList.API",
-        "projectPath": "C:\\Users\\kacperkowalski\\source\\repos\\ShoppingList\\Backend\\ShoppingList.API\\ShoppingList.API.csproj",
-        "packagesPath": "C:\\Users\\kacperkowalski\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\kacperkowalski\\source\\repos\\ShoppingList\\Backend\\ShoppingList.API\\obj\\",
+        "projectPath": "C:\\Users\\kkowa\\Source\\Repos\\ShoppingList\\Backend\\ShoppingList.API\\ShoppingList.API.csproj",
+        "packagesPath": "C:\\Users\\kkowa\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\kkowa\\Source\\Repos\\ShoppingList\\Backend\\ShoppingList.API\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
         ],
         "configFilePaths": [
-          "C:\\Users\\kacperkowalski\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\kkowa\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
@@ -27,16 +27,14 @@
         "sources": {
           "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "C:\\Program Files\\dotnet\\library-packs": {},
-          "https://api.nuget.org/v3/index.json": {},
-          "https://metapack.jfrog.io/artifactory/api/nuget/mp-nuget": {},
-          "https://teamcity.metapack.net/httpAuth/app/nuget/feed/_Root/TeamcityLocalNugetServer/v3/index.json": {}
+          "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
           "net9.0": {
             "targetAlias": "net9.0",
             "projectReferences": {
-              "C:\\Users\\kacperkowalski\\source\\repos\\ShoppingList\\Backend\\ShoppingList.Data\\ShoppingList.Data.csproj": {
-                "projectPath": "C:\\Users\\kacperkowalski\\source\\repos\\ShoppingList\\Backend\\ShoppingList.Data\\ShoppingList.Data.csproj"
+              "C:\\Users\\kkowa\\Source\\Repos\\ShoppingList\\Backend\\ShoppingList.Data\\ShoppingList.Data.csproj": {
+                "projectPath": "C:\\Users\\kkowa\\Source\\Repos\\ShoppingList\\Backend\\ShoppingList.Data\\ShoppingList.Data.csproj"
               }
             }
           }
@@ -51,7 +49,7 @@
           "auditLevel": "low",
           "auditMode": "direct"
         },
-        "SdkAnalysisLevel": "10.0.100"
+        "SdkAnalysisLevel": "9.0.300"
       },
       "frameworks": {
         "net9.0": {
@@ -87,24 +85,24 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.100/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.305/PortableRuntimeIdentifierGraph.json"
         }
       }
     },
-    "C:\\Users\\kacperkowalski\\source\\repos\\ShoppingList\\Backend\\ShoppingList.Data\\ShoppingList.Data.csproj": {
+    "C:\\Users\\kkowa\\Source\\Repos\\ShoppingList\\Backend\\ShoppingList.Data\\ShoppingList.Data.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\kacperkowalski\\source\\repos\\ShoppingList\\Backend\\ShoppingList.Data\\ShoppingList.Data.csproj",
+        "projectUniqueName": "C:\\Users\\kkowa\\Source\\Repos\\ShoppingList\\Backend\\ShoppingList.Data\\ShoppingList.Data.csproj",
         "projectName": "ShoppingList.Data",
-        "projectPath": "C:\\Users\\kacperkowalski\\source\\repos\\ShoppingList\\Backend\\ShoppingList.Data\\ShoppingList.Data.csproj",
-        "packagesPath": "C:\\Users\\kacperkowalski\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\kacperkowalski\\source\\repos\\ShoppingList\\Backend\\ShoppingList.Data\\obj\\",
+        "projectPath": "C:\\Users\\kkowa\\Source\\Repos\\ShoppingList\\Backend\\ShoppingList.Data\\ShoppingList.Data.csproj",
+        "packagesPath": "C:\\Users\\kkowa\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\kkowa\\Source\\Repos\\ShoppingList\\Backend\\ShoppingList.Data\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
         ],
         "configFilePaths": [
-          "C:\\Users\\kacperkowalski\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\kkowa\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
@@ -114,9 +112,7 @@
         "sources": {
           "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "C:\\Program Files\\dotnet\\library-packs": {},
-          "https://api.nuget.org/v3/index.json": {},
-          "https://metapack.jfrog.io/artifactory/api/nuget/mp-nuget": {},
-          "https://teamcity.metapack.net/httpAuth/app/nuget/feed/_Root/TeamcityLocalNugetServer/v3/index.json": {}
+          "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
           "net9.0": {
@@ -134,7 +130,7 @@
           "auditLevel": "low",
           "auditMode": "direct"
         },
-        "SdkAnalysisLevel": "10.0.100"
+        "SdkAnalysisLevel": "9.0.300"
       },
       "frameworks": {
         "net9.0": {
@@ -161,7 +157,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.100/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.305/PortableRuntimeIdentifierGraph.json"
         }
       }
     }
