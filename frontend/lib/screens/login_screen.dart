@@ -69,7 +69,6 @@ class _LoginScreenState extends State<LoginScreen> {
                       label: "Username",
                       validator: (v) {
                         if (v == null || v.isEmpty) return "Podaj username";
-                        if (!v.contains("@")) return "Niepoprawny username";
                         return null;
                       },
                     ),
