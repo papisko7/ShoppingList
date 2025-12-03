@@ -11,7 +11,7 @@ class RegisterScreen extends StatefulWidget {
 }
 
 class _RegisterScreenState extends State<RegisterScreen> {
-  final _email = TextEditingController();
+  final _username = TextEditingController();
   final _password = TextEditingController();
   final _confirm = TextEditingController();
   final _formKey = GlobalKey<FormState>();
@@ -29,7 +29,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
       _error = null;
     });
 
-    final ok = await _auth.register(_email.text.trim(), _password.text.trim());
+    final ok = await _auth.register(
+      _username.text.trim(),
+      _password.text.trim(),
+    );
 
     setState(() => _loading = false);
 
@@ -66,11 +69,11 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     const SizedBox(height: 24),
 
                     AuthTextField(
-                      controller: _email,
-                      label: "Email",
+                      controller: _username,
+                      label: "Username",
                       validator: (v) {
-                        if (v == null || v.isEmpty) return "Podaj email";
-                        if (!v.contains("@")) return "Niepoprawny email";
+                        if (v == null || v.isEmpty) return "Podaj username";
+                        if (!v.contains("@")) return "Niepoprawny username";
                         return null;
                       },
                     ),
