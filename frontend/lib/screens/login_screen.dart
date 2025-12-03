@@ -11,7 +11,7 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-  final _email = TextEditingController();
+  final _username = TextEditingController();
   final _password = TextEditingController();
   final _formKey = GlobalKey<FormState>();
 
@@ -28,7 +28,7 @@ class _LoginScreenState extends State<LoginScreen> {
       _error = null;
     });
 
-    final ok = await _auth.login(_email.text.trim(), _password.text.trim());
+    final ok = await _auth.login(_username.text.trim(), _password.text.trim());
 
     setState(() => _loading = false);
 
@@ -65,11 +65,11 @@ class _LoginScreenState extends State<LoginScreen> {
                     const SizedBox(height: 24),
 
                     AuthTextField(
-                      controller: _email,
-                      label: "Email",
+                      controller: _username,
+                      label: "Username",
                       validator: (v) {
-                        if (v == null || v.isEmpty) return "Podaj email";
-                        if (!v.contains("@")) return "Niepoprawny email";
+                        if (v == null || v.isEmpty) return "Podaj username";
+                        if (!v.contains("@")) return "Niepoprawny username";
                         return null;
                       },
                     ),
