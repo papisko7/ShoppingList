@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/ui/sidebar/sidebar_layout.dart';
+import 'package:frontend/ui/top_app_bar/top_app_bar.dart';
 
 class GroupsAndUsersScreen extends StatelessWidget {
   const GroupsAndUsersScreen({super.key});
@@ -7,16 +8,11 @@ class GroupsAndUsersScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text("Groups and Users"),
-        actions: [
-          IconButton(
-            onPressed: () {
-              Navigator.pushReplacementNamed(context, '/login');
-            },
-            icon: const Icon(Icons.logout),
-          ),
-        ],
+      appBar: TopAppBar(
+        username: "Jakub Bromber",
+        onLogout: () {
+          Navigator.pushReplacementNamed(context, '/login');
+        },
       ),
       body: SidebarLayout(
         active: "groups",
