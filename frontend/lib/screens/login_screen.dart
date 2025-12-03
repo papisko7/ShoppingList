@@ -37,7 +37,7 @@ class _LoginScreenState extends State<LoginScreen> {
       return;
     }
 
-    // TODO: przejście do ekranu głównego
+    Navigator.pushReplacementNamed(context, "/dashboard");
   }
 
   @override
