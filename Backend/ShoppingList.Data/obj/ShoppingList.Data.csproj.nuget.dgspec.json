@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\kkowa\\Source\\Repos\\ShoppingList\\Backend\\ShoppingList.Data\\ShoppingList.Data.csproj": {}
+    "C:\\Users\\kkowa\\source\\repos\\ShoppingList\\Backend\\ShoppingList.Data\\ShoppingList.Data.csproj": {}
   },
   "projects": {
-    "C:\\Users\\kkowa\\Source\\Repos\\ShoppingList\\Backend\\ShoppingList.Data\\ShoppingList.Data.csproj": {
+    "C:\\Users\\kkowa\\source\\repos\\ShoppingList\\Backend\\ShoppingList.Data\\ShoppingList.Data.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\kkowa\\Source\\Repos\\ShoppingList\\Backend\\ShoppingList.Data\\ShoppingList.Data.csproj",
+        "projectUniqueName": "C:\\Users\\kkowa\\source\\repos\\ShoppingList\\Backend\\ShoppingList.Data\\ShoppingList.Data.csproj",
         "projectName": "ShoppingList.Data",
-        "projectPath": "C:\\Users\\kkowa\\Source\\Repos\\ShoppingList\\Backend\\ShoppingList.Data\\ShoppingList.Data.csproj",
+        "projectPath": "C:\\Users\\kkowa\\source\\repos\\ShoppingList\\Backend\\ShoppingList.Data\\ShoppingList.Data.csproj",
         "packagesPath": "C:\\Users\\kkowa\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\kkowa\\Source\\Repos\\ShoppingList\\Backend\\ShoppingList.Data\\obj\\",
+        "outputPath": "C:\\Users\\kkowa\\source\\repos\\ShoppingList\\Backend\\ShoppingList.Data\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -45,13 +45,19 @@
           "auditLevel": "low",
           "auditMode": "direct"
         },
-        "SdkAnalysisLevel": "9.0.300"
+        "SdkAnalysisLevel": "10.0.100"
       },
       "frameworks": {
         "net9.0": {
           "targetAlias": "net9.0",
           "dependencies": {
             "Microsoft.EntityFrameworkCore.SqlServer": {
+              "target": "Package",
+              "version": "[9.0.0, )"
+            },
+            "Microsoft.EntityFrameworkCore.Tools": {
+              "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
+              "suppressParent": "All",
               "target": "Package",
               "version": "[9.0.0, )"
             }
@@ -72,7 +78,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.305/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.100/PortableRuntimeIdentifierGraph.json"
         }
       }
     }
