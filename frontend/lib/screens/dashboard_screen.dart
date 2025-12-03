@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:frontend/ui/top_app_bar/top_app_bar.dart';
 import '../ui/sidebar/sidebar_layout.dart';
 
 class DashboardScreen extends StatelessWidget {
@@ -7,17 +8,11 @@ class DashboardScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text("Shopping List"),
-        backgroundColor: Colors.green,
-        actions: [
-          IconButton(
-            onPressed: () {
-              Navigator.pushReplacementNamed(context, '/login');
-            },
-            icon: const Icon(Icons.logout),
-          ),
-        ],
+      appBar: TopAppBar(
+        username: "Jakub Bromber",
+        onLogout: () {
+          Navigator.pushReplacementNamed(context, '/login');
+        },
       ),
 
       body: SidebarLayout(
