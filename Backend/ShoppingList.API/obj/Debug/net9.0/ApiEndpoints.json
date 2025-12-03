@@ -1,0 +1,12 @@
+[
+  {
+    "ContainingType": "ShoppingList.API.Controllers.AuthController",
+    "Method": "TestConnection",
+    "RelativePath": "api/Auth/test-connection",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  }
+]
