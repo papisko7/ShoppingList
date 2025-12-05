@@ -1,0 +1,105 @@
+﻿using Microsoft.EntityFrameworkCore;
+using ShoppingList.API.DTOs;
+using ShoppingList.API.Services.Interfaces;
+using ShoppingList.Data.Database;
+using ShoppingList.Data.Entities.Login;
+
+namespace ShoppingList.API.Services
+{
+	public class AuthService : IAuthService
+	{
+		private readonly ShoppingListDbContext _context;
+		private readonly ITokenService _tokenService; 
+		private readonly IConfiguration _configuration;
+
+		public AuthService(ShoppingListDbContext context, ITokenService tokenService, IConfiguration configuration)
+		{
+			_context = context;
+			_tokenService = tokenService;
+			_configuration = configuration;
+		}
+
+		public async Task<(bool Success, string Message, UserDto? User)> RegisterAsync(RegisterDto request)
+		{
+			request.Email = request.Email.ToLower();
+
+			if (await _context.Users.AnyAsync(u => u.Email == request.Email))
+				return (false, "Email already registered.", null);
+
+			if (await _context.Users.AnyAsync(u => u.Username == request.Username))
+				return (false, "Username is taken.", null);
+
+			var passwordHash = BCrypt.Net.BCrypt.HashPassword(request.Password);
+
+			var user = new User
+			{
+				Username = request.Username,
+				Email = request.Email,
+				PasswordHash = passwordHash,
+				CreatedAt = DateTime.UtcNow
+			};
+
+			_context.Users.Add(user);
+			await _context.SaveChangesAsync();
+
+			return (true, "Success", new UserDto { Id = user.Id, Username = user.Username, Email = user.Email });
+		}
+
+		public async Task<(bool Success, string Message, string? AccessToken, string? RefreshToken)> LoginAsync(LoginDto request)
+		{
+			request.Email = request.Email.ToLower();
+
+			var user = await _context.Users.FirstOrDefaultAsync(u => u.Email == request.Email);
+
+			if (user == null || !BCrypt.Net.BCrypt.Verify(request.Password, user.PasswordHash))
+				return (false, "Invalid email or password.", null, null);
+
+			var expiredTokens = await _context.Tokens
+				.Where(t => t.UserID == user.Id && t.ExpiresAt <= DateTime.UtcNow)
+				.ToListAsync();
+
+			if (expiredTokens.Any()) _context.Tokens.RemoveRange(expiredTokens);
+
+			return await GenerateAndSaveTokensAsync(user);
+		}
+
+		public async Task<(bool Success, string Message, string? AccessToken, string? RefreshToken)> RefreshTokenAsync(RefreshTokenDto request)
+		{
+			var storedToken = await _context.Tokens
+			   .Include(t => t.User)
+			   .FirstOrDefaultAsync(t => t.RefreshToken == request.Token);
+
+			if (storedToken == null) return (false, "Invalid token.", null, null);
+
+			if (storedToken.ExpiresAt < DateTime.UtcNow)
+			{
+				_context.Tokens.Remove(storedToken);
+				await _context.SaveChangesAsync();
+				return (false, "Token expired.", null, null);
+			}
+
+			_context.Tokens.Remove(storedToken);
+
+			return await GenerateAndSaveTokensAsync(storedToken.User);
+		}
+
+		private async Task<(bool, string, string, string)> GenerateAndSaveTokensAsync(User user)
+		{
+			var accessToken = _tokenService.CreateAccessToken(user);
+			var refreshToken = _tokenService.GenerateRefreshToken();
+
+			var tokenEntity = new Token
+			{
+				UserID = user.Id,
+				RefreshToken = refreshToken,
+				ExpiresAt = DateTime.UtcNow.AddDays(_configuration.GetValue<int>("JwtSettings:RefreshTokenExpirationDays", 7)),
+				CreatedAt = DateTime.UtcNow
+			};
+
+			_context.Tokens.Add(tokenEntity);
+			await _context.SaveChangesAsync();
+
+			return (true, "Success", accessToken, refreshToken);
+		}
+	}
+}
