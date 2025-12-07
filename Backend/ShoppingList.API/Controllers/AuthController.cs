@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.RateLimiting;
 using ShoppingList.API.DTOs;
 using ShoppingList.API.Services.Interfaces;
 
@@ -6,6 +7,7 @@ namespace ShoppingList.API.Controllers
 {
 	[Route("api/[controller]")]
 	[ApiController]
+	[EnableRateLimiting("IpLimiter")]
 	public class AuthController : ControllerBase
 	{
 		private readonly IAuthService _authService;
@@ -28,6 +30,7 @@ namespace ShoppingList.API.Controllers
 		}
 
 		[HttpPost("login")]
+		[EnableRateLimiting("Fixed")]
 		public async Task<IActionResult> Login(LoginDto request)
 		{
 			var result = await _authService.LoginAsync(request);
@@ -48,7 +51,16 @@ namespace ShoppingList.API.Controllers
 			{
 				return Unauthorized(result.Message);
 			}
+
 			return Ok(new { AccessToken = result.AccessToken, RefreshToken = result.RefreshToken });
+		}
+
+		[HttpPost("logout")]
+		public async Task<IActionResult> Logout([FromBody] RefreshTokenDto request)
+		{
+			await _authService.LogoutAsync(request.Token);
+
+			return Ok(new { message = "Logged out" });
 		}
 	}
 }

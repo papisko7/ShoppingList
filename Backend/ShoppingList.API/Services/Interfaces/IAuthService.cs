@@ -9,5 +9,7 @@ namespace ShoppingList.API.Services.Interfaces
 		public Task<(bool Success, string Message, string? AccessToken, string? RefreshToken)> LoginAsync(LoginDto request);
 
 		public Task<(bool Success, string Message, string? AccessToken, string? RefreshToken)> RefreshTokenAsync(RefreshTokenDto request);
+
+		public Task<(bool Success, string Message)> LogoutAsync(string refreshToken);
 	}
 }
