@@ -9,7 +9,7 @@ namespace ShoppingList.API.Services
 	public class AuthService : IAuthService
 	{
 		private readonly ShoppingListDbContext _context;
-		private readonly ITokenService _tokenService; 
+		private readonly ITokenService _tokenService;
 		private readonly IConfiguration _configuration;
 
 		public AuthService(ShoppingListDbContext context, ITokenService tokenService, IConfiguration configuration)
@@ -21,10 +21,7 @@ namespace ShoppingList.API.Services
 
 		public async Task<(bool Success, string Message, UserDto? User)> RegisterAsync(RegisterDto request)
 		{
-			request.Email = request.Email.ToLower();
-
-			if (await _context.Users.AnyAsync(u => u.Email == request.Email))
-				return (false, "Email already registered.", null);
+			request.Username = request.Username.ToLower();
 
 			if (await _context.Users.AnyAsync(u => u.Username == request.Username))
 				return (false, "Username is taken.", null);
@@ -34,7 +31,6 @@ namespace ShoppingList.API.Services
 			var user = new User
 			{
 				Username = request.Username,
-				Email = request.Email,
 				PasswordHash = passwordHash,
 				CreatedAt = DateTime.UtcNow
 			};
@@ -42,17 +38,17 @@ namespace ShoppingList.API.Services
 			_context.Users.Add(user);
 			await _context.SaveChangesAsync();
 
-			return (true, "Success", new UserDto { Id = user.Id, Username = user.Username, Email = user.Email });
+			return (true, "Success", new UserDto { Id = user.Id, Username = user.Username });
 		}
 
 		public async Task<(bool Success, string Message, string? AccessToken, string? RefreshToken)> LoginAsync(LoginDto request)
 		{
-			request.Email = request.Email.ToLower();
+			request.Username = request.Username.ToLower();
 
-			var user = await _context.Users.FirstOrDefaultAsync(u => u.Email == request.Email);
+			var user = await _context.Users.FirstOrDefaultAsync(u => u.Username == request.Username);
 
 			if (user == null || !BCrypt.Net.BCrypt.Verify(request.Password, user.PasswordHash))
-				return (false, "Invalid email or password.", null, null);
+				return (false, "Invalid username or password.", null, null);
 
 			var expiredTokens = await _context.Tokens
 				.Where(t => t.UserID == user.Id && t.ExpiresAt <= DateTime.UtcNow)
@@ -100,6 +96,19 @@ namespace ShoppingList.API.Services
 			await _context.SaveChangesAsync();
 
 			return (true, "Success", accessToken, refreshToken);
+		}
+
+		public async Task<(bool Success, string Message)> LogoutAsync(string refreshToken)
+		{
+			var token = _context.Tokens.FirstOrDefault(t => t.RefreshToken == refreshToken);
+
+			if (token != null)
+			{
+				_context.Tokens.Remove(token);
+				await _context.SaveChangesAsync();
+			}
+
+			return (true, "Logged out successfuly.");
 		}
 	}
 }

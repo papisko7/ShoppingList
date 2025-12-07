@@ -8,10 +8,6 @@ namespace ShoppingList.API.DTOs
 		[MinLength(4, ErrorMessage = "Username must be at least 4 characters long.")]
 		public required string Username { get; set; }
 
-		[Required(ErrorMessage = "Email is required.")]
-		[EmailAddress(ErrorMessage = "Invalid Email Address")]
-		public required string Email { get; set; }
-
 		[Required(ErrorMessage = "Password is required.")]
 		[MinLength(8, ErrorMessage = "Password must be at least 8 characters long.")]
 		[RegularExpression(@"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^\da-zA-Z]).{8,}$",

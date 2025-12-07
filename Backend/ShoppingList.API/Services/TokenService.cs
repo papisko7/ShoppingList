@@ -21,7 +21,6 @@ namespace ShoppingList.API.Services
 			var claims = new List<Claim>
 			{
 				new Claim(ClaimTypes.Name, user.Username),
-				new Claim(ClaimTypes.Email, user.Email),
 				new Claim("UserId", user.Id.ToString())
 			};
 
