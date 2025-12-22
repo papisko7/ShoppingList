@@ -28,7 +28,7 @@ namespace ShoppingList.API.Services
 
 			var passwordHash = BCrypt.Net.BCrypt.HashPassword(request.Password);
 
-			var user = new User
+			var user = new UserEntity
 			{
 				Username = request.Username,
 				PasswordHash = passwordHash,
@@ -79,12 +79,12 @@ namespace ShoppingList.API.Services
 			return await GenerateAndSaveTokensAsync(storedToken.User);
 		}
 
-		private async Task<(bool, string, string, string)> GenerateAndSaveTokensAsync(User user)
+		private async Task<(bool, string, string, string)> GenerateAndSaveTokensAsync(UserEntity user)
 		{
 			var accessToken = _tokenService.CreateAccessToken(user);
 			var refreshToken = _tokenService.GenerateRefreshToken();
 
-			var tokenEntity = new Token
+			var tokenEntity = new TokenEntity
 			{
 				UserID = user.Id,
 				RefreshToken = refreshToken,

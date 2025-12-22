@@ -4,7 +4,7 @@ namespace ShoppingList.API.Services
 {
 	public interface ITokenService
 	{
-		public string CreateAccessToken(User user);
+		public string CreateAccessToken(UserEntity user);
 
 		public string GenerateRefreshToken();
 	}
