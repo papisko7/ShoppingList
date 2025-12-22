@@ -15,9 +15,9 @@ namespace ShoppingList.Data.Entities.Logic
 
 		public int UserId { get; set; }
 
+		public ICollection<ShoppingListItemEntity> Items { get; set; } = new List<ShoppingListItemEntity>();
+
 		[ForeignKey("UserId")]
 		public UserEntity? User { get; set; }
-
-		public ICollection<ShoppingListItemEntity> Items { get; set; } = new List<ShoppingListItemEntity>();
 	}
 }

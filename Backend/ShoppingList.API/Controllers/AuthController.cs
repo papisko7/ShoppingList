@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.RateLimiting;
-using ShoppingList.API.DTOs;
+using ShoppingList.API.DTOs.Login;
 using ShoppingList.API.Services.Interfaces;
 
 namespace ShoppingList.API.Controllers

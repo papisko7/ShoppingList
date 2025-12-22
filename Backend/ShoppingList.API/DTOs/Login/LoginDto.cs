@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace ShoppingList.API.DTOs
+namespace ShoppingList.API.DTOs.Login
 {
 	public class LoginDto
 	{

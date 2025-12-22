@@ -1,4 +1,4 @@
-﻿using ShoppingList.API.DTOs;
+﻿using ShoppingList.API.DTOs.Login;
 
 namespace ShoppingList.API.Services.Interfaces
 {
