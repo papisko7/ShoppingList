@@ -5,7 +5,7 @@ using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
 
-namespace ShoppingList.API.Services
+namespace ShoppingList.API.Services.Login
 {
 	public class TokenService : ITokenService
 	{
