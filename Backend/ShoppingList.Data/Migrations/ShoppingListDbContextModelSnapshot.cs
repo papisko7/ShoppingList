@@ -22,7 +22,7 @@ namespace ShoppingList.Data.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("ShoppingList.Data.Entities.GroupMember", b =>
+            modelBuilder.Entity("ShoppingList.Data.Entities.Logic.ProductCategoryEntity", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -30,11 +30,51 @@ namespace ShoppingList.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("GroupId")
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("ProductCategories");
+                });
+
+            modelBuilder.Entity("ShoppingList.Data.Entities.Logic.ProductEntity", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    b.Property<DateTime>("JoinedAt")
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("CategoryId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CategoryId");
+
+                    b.ToTable("Products");
+                });
+
+            modelBuilder.Entity("ShoppingList.Data.Entities.Logic.ShoppingListEntity", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("UserId")
                         .HasColumnType("int");
@@ -43,10 +83,40 @@ namespace ShoppingList.Data.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("GroupMember");
+                    b.ToTable("ShoppingLists");
                 });
 
-            modelBuilder.Entity("ShoppingList.Data.Entities.Login.Token", b =>
+            modelBuilder.Entity("ShoppingList.Data.Entities.Logic.ShoppingListItemEntity", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<bool>("IsBought")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("ProductId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Quantity")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("ShoppingListId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProductId");
+
+                    b.HasIndex("ShoppingListId");
+
+                    b.ToTable("ShoppingListItems");
+                });
+
+            modelBuilder.Entity("ShoppingList.Data.Entities.Login.TokenEntity", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -74,7 +144,7 @@ namespace ShoppingList.Data.Migrations
                     b.ToTable("Tokens");
                 });
 
-            modelBuilder.Entity("ShoppingList.Data.Entities.Login.User", b =>
+            modelBuilder.Entity("ShoppingList.Data.Entities.Login.UserEntity", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -98,18 +168,50 @@ namespace ShoppingList.Data.Migrations
                     b.ToTable("Users");
                 });
 
-            modelBuilder.Entity("ShoppingList.Data.Entities.GroupMember", b =>
+            modelBuilder.Entity("ShoppingList.Data.Entities.Logic.ProductEntity", b =>
                 {
-                    b.HasOne("ShoppingList.Data.Entities.Login.User", null)
-                        .WithMany("GroupMembers")
+                    b.HasOne("ShoppingList.Data.Entities.Logic.ProductCategoryEntity", "Category")
+                        .WithMany()
+                        .HasForeignKey("CategoryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Category");
+                });
+
+            modelBuilder.Entity("ShoppingList.Data.Entities.Logic.ShoppingListEntity", b =>
+                {
+                    b.HasOne("ShoppingList.Data.Entities.Login.UserEntity", "User")
+                        .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("User");
                 });
 
-            modelBuilder.Entity("ShoppingList.Data.Entities.Login.Token", b =>
+            modelBuilder.Entity("ShoppingList.Data.Entities.Logic.ShoppingListItemEntity", b =>
                 {
-                    b.HasOne("ShoppingList.Data.Entities.Login.User", "User")
+                    b.HasOne("ShoppingList.Data.Entities.Logic.ProductEntity", "Product")
+                        .WithMany()
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("ShoppingList.Data.Entities.Logic.ShoppingListEntity", "ShoppingList")
+                        .WithMany("Items")
+                        .HasForeignKey("ShoppingListId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Product");
+
+                    b.Navigation("ShoppingList");
+                });
+
+            modelBuilder.Entity("ShoppingList.Data.Entities.Login.TokenEntity", b =>
+                {
+                    b.HasOne("ShoppingList.Data.Entities.Login.UserEntity", "User")
                         .WithMany("Tokens")
                         .HasForeignKey("UserID")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -118,10 +220,13 @@ namespace ShoppingList.Data.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("ShoppingList.Data.Entities.Login.User", b =>
+            modelBuilder.Entity("ShoppingList.Data.Entities.Logic.ShoppingListEntity", b =>
                 {
-                    b.Navigation("GroupMembers");
+                    b.Navigation("Items");
+                });
 
+            modelBuilder.Entity("ShoppingList.Data.Entities.Login.UserEntity", b =>
+                {
                     b.Navigation("Tokens");
                 });
 #pragma warning restore 612, 618

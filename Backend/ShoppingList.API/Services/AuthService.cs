@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using ShoppingList.API.DTOs;
+using ShoppingList.API.DTOs.Login;
 using ShoppingList.API.Services.Interfaces;
 using ShoppingList.Data.Database;
 using ShoppingList.Data.Entities.Login;

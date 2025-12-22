@@ -1,4 +1,4 @@
-﻿namespace ShoppingList.API.DTOs
+﻿namespace ShoppingList.API.DTOs.Login
 {
 	public class RefreshTokenDto
 	{
