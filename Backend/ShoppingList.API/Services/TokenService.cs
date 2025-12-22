@@ -16,7 +16,7 @@ namespace ShoppingList.API.Services
 			_configuration = configuration;
 		}
 
-		public string CreateAccessToken(User user)
+		public string CreateAccessToken(UserEntity user)
 		{
 			var claims = new List<Claim>
 			{

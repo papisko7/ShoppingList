@@ -7,8 +7,8 @@ namespace ShoppingList.Data.Database
 	{
 		public ShoppingListDbContext(DbContextOptions<ShoppingListDbContext> options) : base(options) { }
 
-		public DbSet<User> Users { get; set; }
+		public DbSet<UserEntity> Users { get; set; }
 
-		public DbSet<Token> Tokens { get; set; }
+		public DbSet<TokenEntity> Tokens { get; set; }
 	}
 }
