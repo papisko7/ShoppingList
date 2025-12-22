@@ -30,7 +30,7 @@ namespace ShoppingList.API.Controllers
 		}
 
 		[HttpPost("login")]
-		[EnableRateLimiting("Fixed")]
+		[EnableRateLimiting("IpLimiter")]
 		public async Task<IActionResult> Login(LoginDto request)
 		{
 			var result = await _authService.LoginAsync(request);

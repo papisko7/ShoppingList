@@ -4,7 +4,7 @@ using ShoppingList.API.Services.Interfaces;
 using ShoppingList.Data.Database;
 using ShoppingList.Data.Entities.Login;
 
-namespace ShoppingList.API.Services
+namespace ShoppingList.API.Services.Login
 {
 	public class AuthService : IAuthService
 	{
@@ -65,7 +65,10 @@ namespace ShoppingList.API.Services
 			   .Include(t => t.User)
 			   .FirstOrDefaultAsync(t => t.RefreshToken == request.Token);
 
-			if (storedToken == null) return (false, "Invalid token.", null, null);
+			if (storedToken == null)
+			{
+				return (false, "Invalid token.", null, null);
+			}
 
 			if (storedToken.ExpiresAt < DateTime.UtcNow)
 			{
