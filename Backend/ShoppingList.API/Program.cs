@@ -14,6 +14,7 @@ using System.Threading.RateLimiting;
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
+builder.Services.AddSignalR();
 
 builder.Services.AddOpenApi(options =>
 {
@@ -88,7 +89,7 @@ builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<ITokenService, TokenService>();
 builder.Services.AddScoped<IListService, ListService>();
 builder.Services.AddScoped<IProductService, ShoppingList.API.Services.Logic.ProductService>();
-builder.Services.AddScoped<ShoppingList.API.Services.Interfaces.IGroupService, ShoppingList.API.Services.Logic.GroupService>();
+builder.Services.AddScoped<IGroupService, ShoppingList.API.Services.Logic.GroupService>();
 
 builder.Services.AddCors(options =>
 {
@@ -117,5 +118,6 @@ app.UseAuthorization();
 app.UseCors("ShoppingListFrontend");
 
 app.MapControllers();
+app.MapHub<ShoppingList.API.Hubs.ShoppingHub>("/shoppingHub");
 
 app.Run();

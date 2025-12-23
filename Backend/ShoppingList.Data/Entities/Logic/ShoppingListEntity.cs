@@ -15,6 +15,11 @@ namespace ShoppingList.Data.Entities.Logic
 
 		public int UserId { get; set; }
 
+		public int? GroupId { get; set; }
+
+		[ForeignKey("GroupId")]
+		public virtual GroupEntity? Group { get; set; }
+
 		public ICollection<ShoppingListItemEntity> Items { get; set; } = new List<ShoppingListItemEntity>();
 
 		[ForeignKey("UserId")]
