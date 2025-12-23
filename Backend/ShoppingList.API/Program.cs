@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Scalar.AspNetCore;
+using ShoppingList.API.Middleware;
 using ShoppingList.API.Services;
 using ShoppingList.API.Services.Interfaces;
 using ShoppingList.API.Services.Login;
@@ -104,26 +105,10 @@ if (app.Environment.IsDevelopment())
 {
 	app.MapOpenApi();
 	app.MapScalarApiReference();
-	app.UseDeveloperExceptionPage(); 
+	app.UseDeveloperExceptionPage();
 }
 
-else
-{
-	app.Use(async (context, next) =>
-	{
-		try
-		{
-			await next();
-		}
-		catch (Exception ex)
-		{
-			context.Response.StatusCode = 500;
-			await context.Response.WriteAsJsonAsync(new { error = "An unexpected error occurred." });
-			Console.WriteLine(ex.Message);
-		}
-	});
-}
-
+app.UseMiddleware<ExceptionMiddleware>();
 app.UseHttpsRedirection();
 app.UseRateLimiter();
 app.UseAuthentication();

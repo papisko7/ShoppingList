@@ -36,7 +36,10 @@ namespace ShoppingList.API.Services
 				.Include(l => l.Items).ThenInclude(i => i.Product).ThenInclude(p => p.Category)
 				.FirstOrDefaultAsync(l => l.Id == listId && l.UserId == userId);
 
-			if (list == null) return null;
+			if (list == null)
+			{
+				throw new KeyNotFoundException("List not found.");
+			}
 
 			return new ShoppingListDto
 			{
@@ -57,7 +60,7 @@ namespace ShoppingList.API.Services
 
 		public async Task<ShoppingListDto> CreateListAsync(CreateShoppingListDto dto, int userId)
 		{
-			if(string.IsNullOrWhiteSpace(dto.Name))
+			if (string.IsNullOrWhiteSpace(dto.Name))
 			{
 				throw new ArgumentException("Name of list cannot be empty.");
 			}
@@ -72,17 +75,81 @@ namespace ShoppingList.API.Services
 			_context.ShoppingLists.Add(newList);
 			await _context.SaveChangesAsync();
 
-			return new ShoppingListDto { Id = newList.Id, Name = newList.Name, CreatedAt = newList.CreatedAt };
+			return new ShoppingListDto
+			{
+				Id = newList.Id,
+				Name = newList.Name,
+				CreatedAt = newList.CreatedAt
+			};
+		}
+
+		public async Task UpdateListAsync(int listId, UpdateListDto dto, int userId)
+		{
+			var list = await _context.ShoppingLists.FirstOrDefaultAsync(l => l.Id == listId && l.UserId == userId);
+
+			if (list == null)
+			{
+				throw new KeyNotFoundException("List not found.");
+			}
+
+			if (string.IsNullOrWhiteSpace(dto.Name))
+			{
+				throw new ArgumentException("Name cannot be empty.");
+			}
+
+			list.Name = dto.Name;
+			await _context.SaveChangesAsync();
+		}
+
+		public async Task<ShoppingListItemDto?> GetItemByIdAsync(int itemId, int userId)
+		{
+			var item = await _context.ShoppingListItems
+				.Include(i => i.Product).ThenInclude(p => p.Category)
+				.Include(i => i.ShoppingList)
+				.FirstOrDefaultAsync(i => i.Id == itemId && i.ShoppingList!.UserId == userId);
+
+			if (item == null)
+			{
+				throw new KeyNotFoundException("Item not found.");
+			}
+
+			return new ShoppingListItemDto
+			{
+				Id = item.Id,
+				ProductId = item.ProductId,
+				ProductName = item.Product!.Name,
+				CategoryName = item.Product.Category?.Name ?? DEFAULT_CATEGORY,
+				Quantity = item.Quantity,
+				IsBought = item.IsBought
+			};
+		}
+
+		public async Task UpdateItemAsync(int itemId, UpdateListItemDto dto, int userId)
+		{
+			var item = await _context.ShoppingListItems
+				.Include(i => i.ShoppingList)
+				.FirstOrDefaultAsync(i => i.Id == itemId && i.ShoppingList!.UserId == userId);
+
+			if (item == null)
+			{
+				throw new KeyNotFoundException("Item not found.");
+			}
+
+			item.Quantity = dto.Quantity;
+			await _context.SaveChangesAsync();
 		}
 
 		public async Task DeleteListAsync(int listId, int userId)
 		{
 			var list = await _context.ShoppingLists.FirstOrDefaultAsync(l => l.Id == listId && l.UserId == userId);
-			if (list != null)
+
+			if (list == null)
 			{
-				_context.ShoppingLists.Remove(list);
-				await _context.SaveChangesAsync();
+				throw new KeyNotFoundException("List not found.");
 			}
+
+			_context.ShoppingLists.Remove(list);
+			await _context.SaveChangesAsync();
 		}
 
 		public async Task<ShoppingListItemDto> AddItemAsync(AddProductDto dto, int userId)
@@ -101,7 +168,7 @@ namespace ShoppingList.API.Services
 
 			if (list == null)
 			{
-				throw new Exception("List not found.");
+				throw new KeyNotFoundException("List not found.");
 			}
 
 			var category = await _context.ProductCategories.FirstOrDefaultAsync(c => c.Name.ToLower() == dto.CategoryName.ToLower());
@@ -116,7 +183,7 @@ namespace ShoppingList.API.Services
 					await _context.SaveChangesAsync();
 				}
 
-				catch(DbUpdateException)
+				catch (DbUpdateException)
 				{
 					_context.Entry(category).State = EntityState.Detached;
 					category = await _context.ProductCategories.FirstAsync(c => c.Name.ToLower() == dto.CategoryName.ToLower());
@@ -170,11 +237,13 @@ namespace ShoppingList.API.Services
 				.Include(i => i.ShoppingList)
 				.FirstOrDefaultAsync(i => i.Id == itemId && i.ShoppingList!.UserId == userId);
 
-			if (item != null)
+			if (item == null)
 			{
-				item.IsBought = !item.IsBought;
-				await _context.SaveChangesAsync();
+				throw new KeyNotFoundException("Item not found.");
 			}
+
+			item.IsBought = !item.IsBought;
+			await _context.SaveChangesAsync();
 		}
 
 		public async Task RemoveItemAsync(int itemId, int userId)
@@ -183,11 +252,13 @@ namespace ShoppingList.API.Services
 				.Include(i => i.ShoppingList)
 				.FirstOrDefaultAsync(i => i.Id == itemId && i.ShoppingList!.UserId == userId);
 
-			if (item != null)
+			if (item == null)
 			{
-				_context.ShoppingListItems.Remove(item);
-				await _context.SaveChangesAsync();
+				throw new KeyNotFoundException("Item not found.");
 			}
+
+			_context.ShoppingListItems.Remove(item);
+			await _context.SaveChangesAsync();
 		}
 	}
 }

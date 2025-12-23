@@ -26,6 +26,7 @@ namespace ShoppingList.API.Controllers
 			{
 				return BadRequest(result.Message);
 			}
+
 			return Ok(result.User);
 		}
 
@@ -38,6 +39,7 @@ namespace ShoppingList.API.Controllers
 			{
 				return BadRequest(result.Message);
 			}
+
 			return Ok(new { AccessToken = result.AccessToken, RefreshToken = result.RefreshToken });
 		}
 
@@ -58,7 +60,6 @@ namespace ShoppingList.API.Controllers
 		public async Task<IActionResult> Logout([FromBody] RefreshTokenDto request)
 		{
 			await _authService.LogoutAsync(request.Token);
-
 			return Ok(new { message = "Logged out" });
 		}
 	}

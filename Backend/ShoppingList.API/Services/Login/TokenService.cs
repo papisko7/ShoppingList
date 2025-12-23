@@ -27,7 +27,6 @@ namespace ShoppingList.API.Services.Login
 			var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(
 				_configuration["JwtSettings:SecretKey"]!));
 			var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha512Signature);
-
 			var token = new JwtSecurityToken(
 				claims: claims,
 				expires: DateTime.UtcNow.AddMinutes(_configuration.GetValue<int>("JwtSettings:AccessTokenExpirationMinutes", 15)),
@@ -43,7 +42,6 @@ namespace ShoppingList.API.Services.Login
 			using var rng = RandomNumberGenerator.Create();
 
 			rng.GetBytes(randomNumber);
-
 			return Convert.ToBase64String(randomNumber);
 		}
 	}

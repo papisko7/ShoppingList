@@ -3,24 +3,26 @@ using ShoppingList.API.DTOs.Logic.Product;
 
 namespace ShoppingList.API.Services.Interfaces
 {
-    public interface IProductService
-    {
-		Task<List<ProductDto>> GetAllProductsAsync();
+	public interface IProductService
+	{
+		public Task<List<ProductDto>> GetAllProductsAsync();
 
-		Task<ProductDto?> GetProductByIdAsync(int id);
+		public Task<ProductDto?> GetProductByIdAsync(int id);
 
-		Task UpdateProductAsync(int id, UpdateProductDto dto);
+		public Task<ProductDto> CreateProductAsync(CreateProductDictionaryDto dto);
 
-		Task DeleteProductAsync(int id);
+		public Task UpdateProductAsync(int id, UpdateProductDto dto);
 
-		Task<List<CategoryDto>> GetAllCategoriesAsync();
+		public Task DeleteProductAsync(int id);
 
-		Task<CategoryDto?> GetCategoryByIdAsync(int id);
+		public Task<List<CategoryDto>> GetAllCategoriesAsync();
 
-		Task<CategoryDto> CreateCategoryAsync(UpdateCategoryDto dto);
+		public Task<CategoryDto?> GetCategoryByIdAsync(int id);
 
-		Task UpdateCategoryAsync(int id, UpdateCategoryDto dto);
+		public Task<CategoryDto> CreateCategoryAsync(UpdateCategoryDto dto);
 
-		Task DeleteCategoryAsync(int id);
+		public Task UpdateCategoryAsync(int id, UpdateCategoryDto dto);
+
+		public Task DeleteCategoryAsync(int id);
 	}
 }
