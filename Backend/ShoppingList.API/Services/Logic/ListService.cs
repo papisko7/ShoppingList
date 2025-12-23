@@ -8,6 +8,7 @@ namespace ShoppingList.API.Services
 	public class ListService : IListService
 	{
 		private readonly ShoppingListDbContext _context;
+		private const string DEFAULT_CATEGORY = "Uncategorized";
 
 		public ListService(ShoppingListDbContext context)
 		{
@@ -45,7 +46,7 @@ namespace ShoppingList.API.Services
 					Id = i.Id,
 					ProductId = i.ProductId,
 					ProductName = i.Product!.Name,
-					CategoryName = i.Product.Category?.Name ?? "Uncategorized",
+					CategoryName = i.Product.Category?.Name ?? DEFAULT_CATEGORY,
 					Quantity = i.Quantity,
 					IsBought = i.IsBought
 				}).ToList()
@@ -54,6 +55,11 @@ namespace ShoppingList.API.Services
 
 		public async Task<ShoppingListDto> CreateListAsync(CreateShoppingListDto dto, int userId)
 		{
+			if(string.IsNullOrWhiteSpace(dto.Name))
+			{
+				throw new ArgumentException("Name of list cannot be empty.");
+			}
+
 			var newList = new ShoppingListEntity
 			{
 				Name = dto.Name,
@@ -79,26 +85,59 @@ namespace ShoppingList.API.Services
 
 		public async Task<ShoppingListItemDto> AddItemAsync(AddProductDto dto, int userId)
 		{
+			if (string.IsNullOrWhiteSpace(dto.ProductName))
+			{
+				throw new ArgumentException("Product name cannot be empty.");
+			}
+
+			if (string.IsNullOrWhiteSpace(dto.CategoryName))
+			{
+				dto.CategoryName = DEFAULT_CATEGORY;
+			}
+
 			var list = await _context.ShoppingLists.FirstOrDefaultAsync(l => l.Id == dto.ShoppingListId && l.UserId == userId);
+
 			if (list == null)
 			{
 				throw new Exception("List not found.");
 			}
 
-			var category = await _context.ProductCategories.FirstOrDefaultAsync(c => c.Name == dto.CategoryName);
+			var category = await _context.ProductCategories.FirstOrDefaultAsync(c => c.Name.ToLower() == dto.CategoryName.ToLower());
+
 			if (category == null)
 			{
 				category = new ProductCategoryEntity { Name = dto.CategoryName };
-				_context.ProductCategories.Add(category);
-				await _context.SaveChangesAsync();
+
+				try
+				{
+					_context.ProductCategories.Add(category);
+					await _context.SaveChangesAsync();
+				}
+
+				catch(DbUpdateException)
+				{
+					_context.Entry(category).State = EntityState.Detached;
+					category = await _context.ProductCategories.FirstAsync(c => c.Name.ToLower() == dto.CategoryName.ToLower());
+				}
 			}
 
-			var product = await _context.Products.FirstOrDefaultAsync(p => p.Name == dto.ProductName);
+			var product = await _context.Products.FirstOrDefaultAsync(p => p.Name.ToLower() == dto.ProductName.ToLower());
+
 			if (product == null)
 			{
 				product = new ProductEntity { Name = dto.ProductName, CategoryId = category.Id };
-				_context.Products.Add(product);
-				await _context.SaveChangesAsync();
+
+				try
+				{
+					_context.Products.Add(product);
+					await _context.SaveChangesAsync();
+				}
+
+				catch (DbUpdateException)
+				{
+					_context.Entry(product).State = EntityState.Detached;
+					product = await _context.Products.FirstAsync(p => p.Name.ToLower() == dto.ProductName.ToLower());
+				}
 			}
 
 			var newItem = new ShoppingListItemEntity

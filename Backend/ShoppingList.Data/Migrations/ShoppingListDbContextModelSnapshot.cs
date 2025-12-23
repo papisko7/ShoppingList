@@ -32,9 +32,13 @@ namespace ShoppingList.Data.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("Name")
+                        .IsUnique();
 
                     b.ToTable("ProductCategories");
                 });
@@ -52,11 +56,15 @@ namespace ShoppingList.Data.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.HasKey("Id");
 
                     b.HasIndex("CategoryId");
+
+                    b.HasIndex("Name")
+                        .IsUnique();
 
                     b.ToTable("Products");
                 });
@@ -171,7 +179,7 @@ namespace ShoppingList.Data.Migrations
             modelBuilder.Entity("ShoppingList.Data.Entities.Logic.ProductEntity", b =>
                 {
                     b.HasOne("ShoppingList.Data.Entities.Logic.ProductCategoryEntity", "Category")
-                        .WithMany()
+                        .WithMany("Products")
                         .HasForeignKey("CategoryId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -218,6 +226,11 @@ namespace ShoppingList.Data.Migrations
                         .IsRequired();
 
                     b.Navigation("User");
+                });
+
+            modelBuilder.Entity("ShoppingList.Data.Entities.Logic.ProductCategoryEntity", b =>
+                {
+                    b.Navigation("Products");
                 });
 
             modelBuilder.Entity("ShoppingList.Data.Entities.Logic.ShoppingListEntity", b =>
