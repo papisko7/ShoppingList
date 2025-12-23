@@ -86,6 +86,7 @@ builder.Services.AddRateLimiter(options =>
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<ITokenService, TokenService>();
 builder.Services.AddScoped<IListService, ListService>();
+builder.Services.AddScoped<IProductService, ShoppingList.API.Services.Logic.ProductService>();
 
 builder.Services.AddCors(options =>
 {

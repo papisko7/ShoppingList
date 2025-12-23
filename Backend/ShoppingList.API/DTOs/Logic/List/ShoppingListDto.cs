@@ -1,4 +1,6 @@
-﻿namespace ShoppingList.API.DTOs.Logic
+﻿using ShoppingList.API.DTOs.Logic.Item;
+
+namespace ShoppingList.API.DTOs.Logic.List
 {
 	public class ShoppingListDto
 	{

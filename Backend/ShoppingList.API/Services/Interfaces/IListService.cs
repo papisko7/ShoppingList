@@ -1,4 +1,6 @@
-﻿using ShoppingList.API.DTOs.Logic;
+﻿using ShoppingList.API.DTOs.Logic.Item;
+using ShoppingList.API.DTOs.Logic.List;
+using ShoppingList.API.DTOs.Logic.Product;
 
 namespace ShoppingList.API.Services
 {

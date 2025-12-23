@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace ShoppingList.API.DTOs.Logic
+namespace ShoppingList.API.DTOs.Logic.Product
 {
 	public class AddProductDto
 	{

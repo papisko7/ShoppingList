@@ -1,5 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using ShoppingList.API.DTOs.Logic;
+using ShoppingList.API.DTOs.Logic.Item;
+using ShoppingList.API.DTOs.Logic.List;
+using ShoppingList.API.DTOs.Logic.Product;
 using ShoppingList.Data.Database;
 using ShoppingList.Data.Entities.Logic;
 
