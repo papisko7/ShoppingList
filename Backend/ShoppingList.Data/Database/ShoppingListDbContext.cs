@@ -20,6 +20,10 @@ namespace ShoppingList.Data.Database
 
 		public DbSet<ShoppingListItemEntity> ShoppingListItems { get; set; }
 
+		public DbSet<GroupEntity> Groups { get; set; }
+
+		public DbSet<GroupMemberEntity> GroupMembers { get; set; }
+
 		protected override void OnModelCreating(ModelBuilder modelBuilder)
 		{
 			modelBuilder.Entity<ProductCategoryEntity>()
@@ -28,6 +32,10 @@ namespace ShoppingList.Data.Database
 
 			modelBuilder.Entity<ProductEntity>()
 				.HasIndex(p => p.Name)
+				.IsUnique();
+
+			modelBuilder.Entity<GroupEntity>()
+				.HasIndex(g => g.JoinCode)
 				.IsUnique();
 		}
 	}
