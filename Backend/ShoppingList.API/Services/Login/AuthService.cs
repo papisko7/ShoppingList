@@ -24,7 +24,9 @@ namespace ShoppingList.API.Services.Login
 			request.Username = request.Username.ToLower();
 
 			if (await _context.Users.AnyAsync(u => u.Username == request.Username))
+			{
 				return (false, "Username is taken.", null);
+			}
 
 			var passwordHash = BCrypt.Net.BCrypt.HashPassword(request.Password);
 
@@ -38,7 +40,11 @@ namespace ShoppingList.API.Services.Login
 			_context.Users.Add(user);
 			await _context.SaveChangesAsync();
 
-			return (true, "Success", new UserDto { Id = user.Id, Username = user.Username });
+			return (true, "Success", new UserDto
+			{
+				Id = user.Id,
+				Username = user.Username
+			});
 		}
 
 		public async Task<(bool Success, string Message, string? AccessToken, string? RefreshToken)> LoginAsync(LoginDto request)
@@ -48,13 +54,18 @@ namespace ShoppingList.API.Services.Login
 			var user = await _context.Users.FirstOrDefaultAsync(u => u.Username == request.Username);
 
 			if (user == null || !BCrypt.Net.BCrypt.Verify(request.Password, user.PasswordHash))
+			{
 				return (false, "Invalid username or password.", null, null);
+			}
 
 			var expiredTokens = await _context.Tokens
 				.Where(t => t.UserID == user.Id && t.ExpiresAt <= DateTime.UtcNow)
 				.ToListAsync();
 
-			if (expiredTokens.Any()) _context.Tokens.RemoveRange(expiredTokens);
+			if (expiredTokens.Any())
+			{
+				_context.Tokens.RemoveRange(expiredTokens);
+			}
 
 			return await GenerateAndSaveTokensAsync(user);
 		}
@@ -74,11 +85,11 @@ namespace ShoppingList.API.Services.Login
 			{
 				_context.Tokens.Remove(storedToken);
 				await _context.SaveChangesAsync();
+
 				return (false, "Token expired.", null, null);
 			}
 
 			_context.Tokens.Remove(storedToken);
-
 			return await GenerateAndSaveTokensAsync(storedToken.User);
 		}
 

@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using ShoppingList.API.DTOs.Logic;
 using ShoppingList.API.DTOs.Logic.Category;
 using ShoppingList.API.Services.Interfaces;
 
@@ -8,7 +7,7 @@ namespace ShoppingList.API.Controllers
 {
 	[Route("api/[controller]")]
 	[ApiController]
-	[Authorize] // Tylko zalogowani mogą zarządzać słownikiem
+	[Authorize]
 	public class CategoriesController : ControllerBase
 	{
 		private readonly IProductService _service;
@@ -18,60 +17,44 @@ namespace ShoppingList.API.Controllers
 			_service = service;
 		}
 
-		[HttpGet("GetAllCategories")]
+		[HttpGet("get-all-categories")]
 		public async Task<ActionResult<List<CategoryDto>>> GetAll()
 		{
 			return Ok(await _service.GetAllCategoriesAsync());
 		}
 
-		[HttpGet("GetCategoryById/{id}")]
+		[HttpGet("get-category-by-id/{id}")]
 		public async Task<ActionResult<CategoryDto>> GetById(int id)
 		{
 			var cat = await _service.GetCategoryByIdAsync(id);
-			if (cat == null) return NotFound();
+
+			if (cat == null)
+			{
+				return NotFound();
+			}
+
 			return Ok(cat);
 		}
 
-		[HttpPost("CreateCategory")]
+		[HttpPost("create-category")]
 		public async Task<ActionResult<CategoryDto>> Create([FromBody] UpdateCategoryDto dto)
 		{
-			try
-			{
-				var result = await _service.CreateCategoryAsync(dto);
-				return CreatedAtAction(nameof(GetById), new { id = result.Id }, result);
-			}
-			catch (Exception ex)
-			{
-				return BadRequest(new { message = ex.Message });
-			}
+			var result = await _service.CreateCategoryAsync(dto);
+			return CreatedAtAction(nameof(GetById), new { id = result.Id }, result);
 		}
 
-		[HttpPut("UpdateCategory/{id}")]
+		[HttpPut("update-category/{id}")]
 		public async Task<IActionResult> Update(int id, [FromBody] UpdateCategoryDto dto)
 		{
-			try
-			{
-				await _service.UpdateCategoryAsync(id, dto);
-				return Ok(new { message = "Category updated" });
-			}
-			catch (Exception ex)
-			{
-				return BadRequest(new { message = ex.Message });
-			}
+			await _service.UpdateCategoryAsync(id, dto);
+			return Ok(new { message = "Category updated" });
 		}
 
-		[HttpDelete("DeleteCategory/{id}")]
+		[HttpDelete("delete-category/{id}")]
 		public async Task<IActionResult> Delete(int id)
 		{
-			try
-			{
-				await _service.DeleteCategoryAsync(id);
-				return Ok(new { message = "Category deleted" });
-			}
-			catch (Exception ex)
-			{
-				return BadRequest(new { message = ex.Message }); // Zwróci info, że nie można usunąć bo są produkty
-			}
+			await _service.DeleteCategoryAsync(id);
+			return Ok(new { message = "Category deleted" });
 		}
 	}
 }

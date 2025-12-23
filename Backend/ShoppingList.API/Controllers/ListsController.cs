@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ShoppingList.API.DTOs.Logic.List;
-using ShoppingList.API.DTOs.Logic.Product;
 using ShoppingList.API.Services;
 
 namespace ShoppingList.API.Controllers
@@ -21,21 +20,27 @@ namespace ShoppingList.API.Controllers
 		private int GetUserId()
 		{
 			var idClaim = User.FindFirst("UserId");
-			if (idClaim == null) return 0;
+
+			if (idClaim == null)
+			{
+				return 0;
+			}
+
 			return int.Parse(idClaim.Value);
 		}
 
-		[HttpGet("GetMyLists")]
+		[HttpGet("get-my-lists")]
 		public async Task<ActionResult<List<ShoppingListDto>>> GetMyLists()
 		{
 			var lists = await _listService.GetAllListsAsync(GetUserId());
 			return Ok(lists);
 		}
 
-		[HttpGet("GetListDetails/{id}")]
+		[HttpGet("get-list-details/{id}")]
 		public async Task<ActionResult<ShoppingListDto>> GetListDetails(int id)
 		{
 			var list = await _listService.GetListByIdAsync(id, GetUserId());
+
 			if (list == null)
 			{
 				return NotFound("List not found.");
@@ -44,46 +49,25 @@ namespace ShoppingList.API.Controllers
 			return Ok(list);
 		}
 
-		[HttpPost("CreateList")]
+		[HttpPost("create-list")]
 		public async Task<ActionResult<ShoppingListDto>> CreateList([FromBody] CreateShoppingListDto dto)
 		{
 			var result = await _listService.CreateListAsync(dto, GetUserId());
 			return Ok(result);
 		}
 
-		[HttpDelete("DeleteList/{id}")]
+		[HttpPut("update-list/{id}")]
+		public async Task<IActionResult> UpdateList(int id, [FromBody] UpdateListDto dto)
+		{
+			await _listService.UpdateListAsync(id, dto, GetUserId());
+			return Ok(new { message = "List updated" });
+		}
+
+		[HttpDelete("delete-list/{id}")]
 		public async Task<IActionResult> DeleteList(int id)
 		{
 			await _listService.DeleteListAsync(id, GetUserId());
 			return Ok(new { message = "List deleted" });
-		}
-
-		[HttpPost("AddItem")]
-		public async Task<IActionResult> AddItem([FromBody] AddProductDto dto)
-		{
-			try
-			{
-				var item = await _listService.AddItemAsync(dto, GetUserId());
-				return Ok(item);
-			}
-			catch (Exception ex)
-			{
-				return BadRequest(new { message = ex.Message });
-			}
-		}
-
-		[HttpPatch("ToggleItem/{itemId}")]
-		public async Task<IActionResult> ToggleItem(int itemId)
-		{
-			await _listService.ToggleItemAsync(itemId, GetUserId());
-			return Ok(new { message = "Item updated" });
-		}
-
-		[HttpDelete("RemoveItem/{itemId}")]
-		public async Task<IActionResult> RemoveItem(int itemId)
-		{
-			await _listService.RemoveItemAsync(itemId, GetUserId());
-			return Ok(new { message = "Item removed" });
 		}
 	}
 }

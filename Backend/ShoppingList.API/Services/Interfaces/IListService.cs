@@ -6,18 +6,24 @@ namespace ShoppingList.API.Services
 {
 	public interface IListService
 	{
-		Task<List<ShoppingListDto>> GetAllListsAsync(int userId);
+		public Task<List<ShoppingListDto>> GetAllListsAsync(int userId);
 
-		Task<ShoppingListDto?> GetListByIdAsync(int listId, int userId);
+		public Task<ShoppingListDto?> GetListByIdAsync(int listId, int userId);
 
-		Task<ShoppingListDto> CreateListAsync(CreateShoppingListDto dto, int userId);
+		public Task<ShoppingListDto> CreateListAsync(CreateShoppingListDto dto, int userId);
 
-		Task DeleteListAsync(int listId, int userId);
+		public Task UpdateListAsync(int listId, UpdateListDto dto, int userId);
 
-		Task<ShoppingListItemDto> AddItemAsync(AddProductDto dto, int userId);
+		public Task DeleteListAsync(int listId, int userId);
 
-		Task ToggleItemAsync(int itemId, int userId);
+		public Task<ShoppingListItemDto> AddItemAsync(AddProductDto dto, int userId);
 
-		Task RemoveItemAsync(int itemId, int userId);
+		public Task<ShoppingListItemDto?> GetItemByIdAsync(int itemId, int userId);
+
+		public Task UpdateItemAsync(int itemId, UpdateListItemDto dto, int userId);
+
+		public Task ToggleItemAsync(int itemId, int userId);
+
+		public Task RemoveItemAsync(int itemId, int userId);
 	}
 }

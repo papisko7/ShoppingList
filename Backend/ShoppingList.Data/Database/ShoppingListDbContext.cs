@@ -24,7 +24,7 @@ namespace ShoppingList.Data.Database
 		{
 			modelBuilder.Entity<ProductCategoryEntity>()
 				.HasIndex(c => c.Name)
-				.IsUnique(); 
+				.IsUnique();
 
 			modelBuilder.Entity<ProductEntity>()
 				.HasIndex(p => p.Name)
