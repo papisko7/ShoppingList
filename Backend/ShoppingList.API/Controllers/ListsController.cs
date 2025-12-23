@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using ShoppingList.API.DTOs.Logic;
+using ShoppingList.API.DTOs.Logic.List;
+using ShoppingList.API.DTOs.Logic.Product;
 using ShoppingList.API.Services;
 
 namespace ShoppingList.API.Controllers
