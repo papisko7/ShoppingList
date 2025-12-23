@@ -18,7 +18,6 @@ builder.Services.AddOpenApi(options =>
 {
 	options.AddDocumentTransformer((document, context, cancellationToken) =>
 	{
-		// 1. Define the Security Scheme (Bearer Token)
 		var securityScheme = new OpenApiSecurityScheme
 		{
 			Name = "Authorization",
@@ -32,7 +31,6 @@ builder.Services.AddOpenApi(options =>
 		document.Components ??= new OpenApiComponents();
 		document.Components.SecuritySchemes.Add("Bearer", securityScheme);
 
-		// 2. Apply it globally to all endpoints
 		var requirement = new OpenApiSecurityRequirement
 		{
 			{
@@ -101,24 +99,28 @@ builder.Services.AddCors(options =>
 
 var app = builder.Build();
 
-app.Use(async (context, next) =>
-{
-	try
-	{
-		await next();
-	}
-	catch (Exception ex)
-	{
-		context.Response.StatusCode = 500;
-		await context.Response.WriteAsJsonAsync(new { error = "An unexpected error occurred." });
-		Console.WriteLine(ex.Message);
-	}
-});
-
 if (app.Environment.IsDevelopment())
 {
 	app.MapOpenApi();
 	app.MapScalarApiReference();
+	app.UseDeveloperExceptionPage(); 
+}
+
+else
+{
+	app.Use(async (context, next) =>
+	{
+		try
+		{
+			await next();
+		}
+		catch (Exception ex)
+		{
+			context.Response.StatusCode = 500;
+			await context.Response.WriteAsJsonAsync(new { error = "An unexpected error occurred." });
+			Console.WriteLine(ex.Message);
+		}
+	});
 }
 
 app.UseHttpsRedirection();

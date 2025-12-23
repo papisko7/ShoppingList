@@ -24,14 +24,14 @@ namespace ShoppingList.API.Controllers
 			return int.Parse(idClaim.Value);
 		}
 
-		[HttpGet]
+		[HttpGet("GetMyLists")]
 		public async Task<ActionResult<List<ShoppingListDto>>> GetMyLists()
 		{
 			var lists = await _listService.GetAllListsAsync(GetUserId());
 			return Ok(lists);
 		}
 
-		[HttpGet("{id}")]
+		[HttpGet("GetListDetails/{id}")]
 		public async Task<ActionResult<ShoppingListDto>> GetListDetails(int id)
 		{
 			var list = await _listService.GetListByIdAsync(id, GetUserId());
@@ -43,21 +43,21 @@ namespace ShoppingList.API.Controllers
 			return Ok(list);
 		}
 
-		[HttpPost]
+		[HttpPost("CreateList")]
 		public async Task<ActionResult<ShoppingListDto>> CreateList([FromBody] CreateShoppingListDto dto)
 		{
 			var result = await _listService.CreateListAsync(dto, GetUserId());
 			return Ok(result);
 		}
 
-		[HttpDelete("{id}")]
+		[HttpDelete("DeleteList/{id}")]
 		public async Task<IActionResult> DeleteList(int id)
 		{
 			await _listService.DeleteListAsync(id, GetUserId());
 			return Ok(new { message = "List deleted" });
 		}
 
-		[HttpPost("items")]
+		[HttpPost("AddItem")]
 		public async Task<IActionResult> AddItem([FromBody] AddProductDto dto)
 		{
 			try
@@ -71,14 +71,14 @@ namespace ShoppingList.API.Controllers
 			}
 		}
 
-		[HttpPatch("items/{itemId}/toggle")]
+		[HttpPatch("ToggleItem/{itemId}")]
 		public async Task<IActionResult> ToggleItem(int itemId)
 		{
 			await _listService.ToggleItemAsync(itemId, GetUserId());
 			return Ok(new { message = "Item updated" });
 		}
 
-		[HttpDelete("items/{itemId}")]
+		[HttpDelete("RemoveItem/{itemId}")]
 		public async Task<IActionResult> RemoveItem(int itemId)
 		{
 			await _listService.RemoveItemAsync(itemId, GetUserId());

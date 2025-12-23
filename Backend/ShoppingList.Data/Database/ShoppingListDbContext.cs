@@ -19,5 +19,16 @@ namespace ShoppingList.Data.Database
 		public DbSet<ShoppingListEntity> ShoppingLists { get; set; }
 
 		public DbSet<ShoppingListItemEntity> ShoppingListItems { get; set; }
+
+		protected override void OnModelCreating(ModelBuilder modelBuilder)
+		{
+			modelBuilder.Entity<ProductCategoryEntity>()
+				.HasIndex(c => c.Name)
+				.IsUnique(); 
+
+			modelBuilder.Entity<ProductEntity>()
+				.HasIndex(p => p.Name)
+				.IsUnique();
+		}
 	}
 }
