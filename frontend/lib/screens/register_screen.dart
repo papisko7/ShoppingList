@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import '../services/mock_auth_service.dart';
+import 'package:frontend/services/auth_provider.dart';
+import 'package:provider/provider.dart';
 import '../ui/auth_button.dart';
 import '../ui/auth_text_field.dart';
 
@@ -19,8 +20,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
   bool _loading = false;
   String? _error;
 
-  final _auth = MockAuthService();
-
   Future<void> _handleRegister() async {
     if (!_formKey.currentState!.validate()) return;
 
@@ -29,19 +28,21 @@ class _RegisterScreenState extends State<RegisterScreen> {
       _error = null;
     });
 
-    final ok = await _auth.register(
-      _username.text.trim(),
-      _password.text.trim(),
-    );
+    try {
+      await context.read<AuthProvider>().register(
+        _username.text.trim(),
+        _password.text.trim(),
+      );
 
-    setState(() => _loading = false);
-
-    if (!ok) {
-      setState(() => _error = "Użytkownik już istnieje");
-      return;
+      if (!mounted) return;
+      Navigator.pushReplacementNamed(context, "/login");
+    } catch (e) {
+      setState(() {
+        _error = "Użytkownik już istnieje";
+      });
+    } finally {
+      setState(() => _loading = false);
     }
-
-    Navigator.pushReplacementNamed(context, "/login");
   }
 
   @override
