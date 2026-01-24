@@ -1,0 +1,28 @@
+﻿using ShoppingList.Data.Entities.Login;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+
+namespace ShoppingList.Data.Entities.Logic
+{
+	public class ShoppingListEntity
+	{
+		public int Id { get; set; }
+
+		[Required]
+		public required string Name { get; set; }
+
+		public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+
+		public int UserId { get; set; }
+
+		public int? GroupId { get; set; }
+
+		[ForeignKey("GroupId")]
+		public virtual GroupEntity? Group { get; set; }
+
+		public ICollection<ShoppingListItemEntity> Items { get; set; } = new List<ShoppingListItemEntity>();
+
+		[ForeignKey("UserId")]
+		public UserEntity? User { get; set; }
+	}
+}
