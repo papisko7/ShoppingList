@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ShoppingList.Data.Database;
 
@@ -11,9 +12,11 @@ using ShoppingList.Data.Database;
 namespace ShoppingList.Data.Migrations
 {
     [DbContext(typeof(ShoppingListDbContext))]
-    partial class ShoppingListDbContextModelSnapshot : ModelSnapshot
+    [Migration("20251223140423_Add-Groups")]
+    partial class AddGroups
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -138,7 +141,7 @@ namespace ShoppingList.Data.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<int?>("GroupId")
+                    b.Property<int?>("GroupEntityId")
                         .HasColumnType("int");
 
                     b.Property<string>("Name")
@@ -150,7 +153,7 @@ namespace ShoppingList.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("GroupId");
+                    b.HasIndex("GroupEntityId");
 
                     b.HasIndex("UserId");
 
@@ -271,17 +274,15 @@ namespace ShoppingList.Data.Migrations
 
             modelBuilder.Entity("ShoppingList.Data.Entities.Logic.ShoppingListEntity", b =>
                 {
-                    b.HasOne("ShoppingList.Data.Entities.Logic.GroupEntity", "Group")
+                    b.HasOne("ShoppingList.Data.Entities.Logic.GroupEntity", null)
                         .WithMany("ShoppingLists")
-                        .HasForeignKey("GroupId");
+                        .HasForeignKey("GroupEntityId");
 
                     b.HasOne("ShoppingList.Data.Entities.Login.UserEntity", "User")
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("Group");
 
                     b.Navigation("User");
                 });

@@ -1,8 +1,8 @@
 ﻿namespace ShoppingList.Data.Entities.Login
 {
-	public class Token
+	public class TokenEntity
 	{
-		public int ID { get; set; }
+		public int Id { get; set; }
 
 		public int UserID { get; set; }
 
@@ -12,6 +12,6 @@
 
 		public DateTime CreatedAt { get; set; }
 
-		public User User { get; set; } = null!;
+		public UserEntity User { get; set; } = null!;
 	}
 }
