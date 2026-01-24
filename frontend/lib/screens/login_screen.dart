@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import '../services/mock_auth_service.dart';
+import 'package:frontend/services/auth_provider.dart';
+import 'package:provider/provider.dart';
 import '../ui/auth_button.dart';
 import '../ui/auth_text_field.dart';
 
@@ -18,8 +19,6 @@ class _LoginScreenState extends State<LoginScreen> {
   bool _loading = false;
   String? _error;
 
-  final _auth = MockAuthService();
-
   Future<void> _handleLogin() async {
     if (!_formKey.currentState!.validate()) return;
 
@@ -28,16 +27,21 @@ class _LoginScreenState extends State<LoginScreen> {
       _error = null;
     });
 
-    final ok = await _auth.login(_username.text.trim(), _password.text.trim());
+    try {
+      await context.read<AuthProvider>().login(
+        _username.text.trim(),
+        _password.text.trim(),
+      );
 
-    setState(() => _loading = false);
-
-    if (!ok) {
-      setState(() => _error = "Niepoprawne dane logowania");
-      return;
+      if (!mounted) return;
+      Navigator.pushReplacementNamed(context, "/dashboard");
+    } catch (e) {
+      setState(() {
+        _error = "Niepoprawne dane logowania";
+      });
+    } finally {
+      setState(() => _loading = false);
     }
-
-    Navigator.pushReplacementNamed(context, "/dashboard");
   }
 
   @override
