@@ -2,7 +2,6 @@ import 'dart:convert';
 
 import 'package:frontend/core/api/api_client.dart';
 import 'package:frontend/core/storage/token_storage.dart';
-import 'package:frontend/models/register_request.dart';
 
 class AuthService {
   final ApiClient api;
@@ -26,13 +25,39 @@ class AuthService {
   }
 
   Future<void> register(String username, String password) async {
-    final req = RegisterRequest(username, password);
+    print('[AUTH SERVICE] Register start');
+    print('[AUTH SERVICE] username=$username');
+    final res = await api.post(
+      '/api/Auth/register',
+      body: {'username': username, 'password': password},
+    );
 
-    final res = await api.post('/api/Auth/register', body: req.toJson());
+    print('[AUTH SERVICE] statusCode=${res.statusCode}');
+    print('[AUTH SERVICE] raw body=${res.body}');
 
-    if (res.statusCode != 200) {
-      throw Exception('Register failed');
+    if (res.statusCode == 200) return;
+
+    final body = jsonDecode(res.body);
+
+    if (res.statusCode == 409) {
+      throw RegisterException('Użytkownik już istnieje');
     }
+
+    if (res.statusCode == 400 && body['errors'] != null) {
+      final errors = body['errors'] as Map<String, dynamic>;
+
+      if (errors.containsKey('Username')) {
+        throw RegisterException(errors['Username'][0]);
+      }
+
+      if (errors.containsKey('Password')) {
+        throw RegisterException(errors['Password'][0]);
+      }
+
+      throw RegisterException('Błąd walidacji danych');
+    }
+
+    throw RegisterException('Błąd rejestracji');
   }
 
   Future<void> refreshToken() async {
@@ -57,4 +82,9 @@ class AuthService {
   Future<void> logout() async {
     await storage.clear();
   }
+}
+
+class RegisterException implements Exception {
+  final String message;
+  RegisterException(this.message);
 }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/services/auth_provider.dart';
+import 'package:frontend/services/auth_service.dart';
 import 'package:provider/provider.dart';
 import '../ui/auth_button.dart';
 import '../ui/auth_text_field.dart';
@@ -36,9 +37,16 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
       if (!mounted) return;
       Navigator.pushReplacementNamed(context, "/login");
-    } catch (e) {
+    } on RegisterException catch (e) {
+      print('[REGISTER SCREEN] RegisterException: ${e.message}');
       setState(() {
-        _error = "Użytkownik już istnieje";
+        _error = e.message;
+      });
+    } catch (e, stack) {
+      print('[REGISTER SCREEN] Unknown error: $e');
+      print(stack);
+      setState(() {
+        _error = "Nieznany błąd rejestracji";
       });
     } finally {
       setState(() => _loading = false);
