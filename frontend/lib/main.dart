@@ -10,7 +10,7 @@ void main() {
   final tokenStorage = WebTokenStorage();
   final apiClient = ApiClient(
     baseUrl: 'http://localhost:5194',
-    tokenStorage: tokenStorage,
+    storage: tokenStorage,
   );
 
   final authService = AuthService(api: apiClient, storage: tokenStorage);
