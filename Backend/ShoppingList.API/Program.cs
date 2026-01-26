@@ -95,14 +95,21 @@ builder.Services.AddCors(options =>
 {
 	options.AddPolicy("ShoppingListFrontend", policy =>
 	{
-		policy.WithOrigins(
-			"http://localhost:62850",
-			"http://localhost:50614",
-			"http://localhost:62850",
-			"http://localhost:5194",
-			"https://myshoppingapp.com")
-			.AllowAnyMethod()
-			.AllowAnyHeader();
+		if (builder.Environment.IsDevelopment())
+		{
+			policy
+				.SetIsOriginAllowed(origin =>
+					origin.StartsWith("http://localhost"))
+				.AllowAnyMethod()
+				.AllowAnyHeader();
+		}
+		else
+		{
+			policy
+				.WithOrigins("https://myshoppingapp.com")
+				.AllowAnyMethod()
+				.AllowAnyHeader();
+		}
 	});
 });
 
