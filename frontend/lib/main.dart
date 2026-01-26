@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/core/api/api_client.dart';
 import 'package:frontend/core/storage/web_token_storage.dart';
-import 'package:frontend/services/auth_provider.dart';
+import 'package:frontend/providers/auth_provider.dart';
 import 'package:frontend/services/auth_service.dart';
 import 'app.dart';
 import 'package:provider/provider.dart';
@@ -19,7 +19,15 @@ void main() {
     MultiProvider(
       providers: [
         ChangeNotifierProvider(
-          create: (_) => AuthProvider(authService: authService),
+          create: (_) => AuthProvider(
+            authService: AuthService(
+              api: ApiClient(
+                baseUrl: 'http://localhost:5194',
+                storage: tokenStorage,
+              ),
+              storage: tokenStorage,
+            ),
+          )..init(),
         ),
       ],
       child: const ShoppingListApp(),
