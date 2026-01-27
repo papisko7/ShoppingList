@@ -13,6 +13,15 @@ class ShoppingList {
     required this.items,
   });
 
+  ShoppingList copyWith({List<ShoppingListItem>? items}) {
+    return ShoppingList(
+      id: id,
+      name: name,
+      createdAt: createdAt,
+      items: items ?? this.items,
+    );
+  }
+
   factory ShoppingList.fromJson(Map<String, dynamic> json) {
     return ShoppingList(
       id: json['id'],

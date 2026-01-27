@@ -2,8 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:frontend/providers/categories_provider.dart';
 import 'package:frontend/providers/categories_selection_provider.dart';
 import 'package:frontend/providers/products_provider.dart';
+import 'package:frontend/providers/shopping_list_details_provider.dart';
+import 'package:frontend/providers/shopping_lists_provider.dart';
 import 'package:frontend/services/category_service.dart';
 import 'package:frontend/services/product_service.dart';
+import 'package:frontend/services/shopping_list_service.dart';
 import 'package:provider/provider.dart';
 
 import 'app.dart';
@@ -38,7 +41,6 @@ void main() {
         ChangeNotifierProvider(
           create: (_) => AuthProvider(authService: authService)..init(),
         ),
-
         ChangeNotifierProvider(
           create: (_) => GroupsProvider(service: groupService),
         ),
@@ -48,6 +50,15 @@ void main() {
         ChangeNotifierProvider(create: (_) => CategoriesSelectionProvider()),
         ChangeNotifierProvider(
           create: (_) => ProductsProvider(service: productService)..fetch(),
+        ),
+        ChangeNotifierProvider(
+          create: (_) =>
+              ShoppingListsProvider(service: ShoppingListService(apiClient)),
+        ),
+        ChangeNotifierProvider(
+          create: (_) => ShoppingListDetailsProvider(
+            service: ShoppingListService(apiClient),
+          ),
         ),
       ],
       child: const ShoppingListApp(),
