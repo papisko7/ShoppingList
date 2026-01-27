@@ -44,4 +44,25 @@ class GroupService {
     print('[GROUP SERVICE] created group id=${created.id}');
     return created;
   }
+
+  Future<Group> joinGroup(String joinCode) async {
+    final response = await api.post(
+      '/api/Groups/join-group',
+      body: {'joinCode': joinCode},
+    );
+
+    if (response.statusCode != 200) {
+      throw Exception('Join group failed');
+    }
+
+    return Group.fromJson(jsonDecode(response.body));
+  }
+
+  Future<void> leaveGroup(int groupId) async {
+    final res = await api.delete('/api/Groups/leave-group/$groupId');
+
+    if (res.statusCode != 200) {
+      throw Exception('Leave group failed');
+    }
+  }
 }

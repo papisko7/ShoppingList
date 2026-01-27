@@ -52,6 +52,30 @@ class GroupsProvider extends ChangeNotifier {
     }
   }
 
+  Future<void> joinGroup(String joinCode) async {
+    try {
+      _error = null;
+
+      final response = await service.joinGroup(joinCode);
+
+      // backend zwraca GroupDto → dokładamy do listy
+      _groups.add(response);
+
+      notifyListeners();
+    } catch (e) {
+      _error = 'Nie udało się dołączyć do grupy';
+      notifyListeners();
+      rethrow;
+    }
+  }
+
+  Future<void> leaveGroup(int groupId) async {
+    await service.leaveGroup(groupId);
+
+    _groups.removeWhere((g) => g.id == groupId);
+    notifyListeners();
+  }
+
   void clear() {
     _groups = [];
     _error = null;
