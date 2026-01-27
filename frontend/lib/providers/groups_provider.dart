@@ -34,6 +34,24 @@ class GroupsProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  Future<void> createGroup(String name) async {
+    print('[GROUPS PROVIDER] createGroup "$name"');
+    _error = null;
+    notifyListeners();
+
+    try {
+      final created = await service.createGroup(name);
+      _groups.insert(0, created); // na górze listy
+      print('[GROUPS PROVIDER] created OK, total=${_groups.length}');
+      notifyListeners();
+    } catch (e) {
+      print('[GROUPS PROVIDER] create error: $e');
+      _error = 'Nie udało się utworzyć grupy';
+      notifyListeners();
+      rethrow;
+    }
+  }
+
   void clear() {
     _groups = [];
     _error = null;
