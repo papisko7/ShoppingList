@@ -25,6 +25,16 @@ class ApiClient {
     );
   }
 
+  Future<http.Response> patch(String path, {Object? body}) async {
+    return _sendWithAuth(
+      () async => http.patch(
+        Uri.parse('$baseUrl$path'),
+        headers: await _headers(),
+        body: body != null ? jsonEncode(body) : null,
+      ),
+    );
+  }
+
   Future<http.Response> put(String path, {Object? body}) async {
     return _sendWithAuth(
       () async => http.put(

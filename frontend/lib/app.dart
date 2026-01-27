@@ -7,7 +7,7 @@ import 'package:frontend/screens/dashboard_screen.dart';
 import 'package:frontend/screens/group_and_users/groups_and_users_screen.dart';
 import 'package:frontend/screens/login_screen.dart';
 import 'package:frontend/screens/register_screen.dart';
-import 'package:frontend/screens/shopping_list_screen.dart';
+import 'package:frontend/screens/shopping_lists/shopping_lists_screen.dart';
 
 class ShoppingListApp extends StatelessWidget {
   const ShoppingListApp({super.key});
@@ -37,7 +37,7 @@ class ShoppingListApp extends StatelessWidget {
         '/register': (context) => const RegisterScreen(),
 
         '/dashboard': (context) => const DashboardScreen(),
-        '/shopping_lists': (context) => const ShoppingListScreen(),
+        '/shopping_lists': (context) => const ShoppingListsScreen(),
         '/groups_and_users': (context) => const GroupsAndUsersScreen(),
         '/categories_and_products': (context) =>
             const CategoriesAndProductsScreen(),
