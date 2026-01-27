@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:frontend/screens/group_and_users_screen/group_tile.dart';
 import 'package:provider/provider.dart';
 import 'package:frontend/providers/groups_provider.dart';
 
@@ -35,23 +36,7 @@ class GroupsList extends StatelessWidget {
       itemCount: groupsProv.groups.length,
       separatorBuilder: (_, __) => const SizedBox(height: 12),
       itemBuilder: (context, i) {
-        final g = groupsProv.groups[i];
-
-        return Card(
-          elevation: 1,
-          child: ListTile(
-            title: Text(
-              g.name,
-              style: const TextStyle(fontWeight: FontWeight.bold),
-            ),
-            subtitle: Text('Kod: ${g.joinCode} • ${g.memberCount} osób'),
-            trailing: const Icon(Icons.chevron_right),
-            onTap: () {
-              // TODO: GroupDetailsScreen
-              print('[GROUPS LIST] open group id=${g.id}');
-            },
-          ),
-        );
+        return GroupTile(group: groupsProv.groups[i]);
       },
     );
   }

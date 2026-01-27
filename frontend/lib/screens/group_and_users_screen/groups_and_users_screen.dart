@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/screens/group_and_users_screen/create_group_fab.dart';
 import 'package:frontend/screens/group_and_users_screen/groups_list.dart';
+import 'package:frontend/screens/group_and_users_screen/join_group_fab.dart';
 import 'package:frontend/ui/sidebar/sidebar_layout.dart';
 import 'package:frontend/ui/top_app_bar/top_app_bar.dart';
 import 'package:provider/provider.dart';
@@ -24,13 +25,20 @@ class _GroupsAndUsersScreenState extends State<GroupsAndUsersScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: TopAppBar(
-        username: "Jakub Bromber",
         onLogout: () {
           Navigator.pushReplacementNamed(context, '/login');
         },
       ),
 
-      floatingActionButton: const CreateGroupFab(),
+      floatingActionButton: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.end,
+        children: const [
+          JoinGroupFab(),
+          SizedBox(height: 12),
+          CreateGroupFab(),
+        ],
+      ),
 
       body: SidebarLayout(
         active: "groups",

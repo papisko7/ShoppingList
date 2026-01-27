@@ -9,7 +9,6 @@ class ShoppingListScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: TopAppBar(
-        username: "Jakub Bromber",
         onLogout: () {
           Navigator.pushReplacementNamed(context, '/login');
         },
