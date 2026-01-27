@@ -72,12 +72,9 @@ class CreateProductButton extends StatelessWidget {
     final name = nameCtrl.text.trim();
     if (name.isEmpty) return;
 
-    final categoryName = categories.firstWhere((c) => c.id == selectedId).name;
-
     await context.read<ProductsProvider>().create(
       productName: name,
       categoryId: selectedId,
-      categoryName: categoryName,
     );
   }
 }

@@ -28,15 +28,10 @@ class ProductsProvider extends ChangeNotifier {
   Future<void> create({
     required String productName,
     required int categoryId,
-    String? categoryName,
   }) async {
-    final created = await service.create(
-      productName: productName,
-      categoryId: categoryId,
-      categoryName: categoryName,
-    );
-    products = [created, ...products];
-    notifyListeners();
+    await service.create(productName: productName, categoryId: categoryId);
+
+    await fetch();
   }
 
   Future<void> update({

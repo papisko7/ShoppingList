@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/models/category.dart';
 import 'package:frontend/providers/categories_provider.dart';
+import 'package:frontend/providers/categories_selection_provider.dart';
 import 'package:provider/provider.dart';
 
 class CategoryTile extends StatelessWidget {
@@ -15,6 +16,9 @@ class CategoryTile extends StatelessWidget {
           category.name,
           style: const TextStyle(fontWeight: FontWeight.bold),
         ),
+        onTap: () {
+          context.read<CategoriesSelectionProvider>().select(category.id);
+        },
         trailing: PopupMenuButton<String>(
           onSelected: (v) {
             if (v == 'edit') _edit(context);
