@@ -1,6 +1,6 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
-import '../storage/token_storage.dart';
+import 'package:frontend/core/storage/token_storage.dart';
 
 class ApiClient {
   final String baseUrl;
@@ -8,98 +8,104 @@ class ApiClient {
 
   ApiClient({required this.baseUrl, required this.storage});
 
-  Future<http.Response> post(String path, {Map<String, dynamic>? body}) {
-    return _send(
-      () => http.post(
+  Future<http.Response> get(String path) async {
+    return _sendWithAuth(
+      () async =>
+          http.get(Uri.parse('$baseUrl$path'), headers: await _headers()),
+    );
+  }
+
+  Future<http.Response> post(String path, {Object? body}) async {
+    return _sendWithAuth(
+      () async => http.post(
         Uri.parse('$baseUrl$path'),
-        headers: {'Content-Type': 'application/json'},
-        body: jsonEncode(body),
+        headers: await _headers(),
+        body: body != null ? jsonEncode(body) : null,
       ),
     );
   }
 
-  Future<http.Response> get(String path) {
-    return _send(
-      () => http.get(
+  Future<http.Response> put(String path, {Object? body}) async {
+    return _sendWithAuth(
+      () async => http.put(
         Uri.parse('$baseUrl$path'),
-        headers: {'Content-Type': 'application/json'},
+        headers: await _headers(),
+        body: body != null ? jsonEncode(body) : null,
       ),
     );
   }
 
-  Future<http.Response> _send(Future<http.Response> Function() request) async {
+  Future<http.Response> delete(String path) async {
+    return _sendWithAuth(
+      () async =>
+          http.delete(Uri.parse('$baseUrl$path'), headers: await _headers()),
+    );
+  }
+
+  // =========================
+  // INTERNALS
+  // =========================
+
+  Future<Map<String, String>> _headers() async {
     final accessToken = await storage.getAccessToken();
 
-    print('[API] Sending request');
     print('[API] Access token: $accessToken');
 
-    http.Response response;
+    return {
+      'Content-Type': 'application/json',
+      if (accessToken != null) 'Authorization': 'Bearer $accessToken',
+    };
+  }
 
-    if (accessToken != null) {
-      response = await requestWithToken(request, accessToken);
-    } else {
-      response = await request();
-    }
+  Future<http.Response> _sendWithAuth(
+    Future<http.Response> Function() request,
+  ) async {
+    print('[API] Sending request');
+
+    http.Response response = await request();
 
     print('[API] Response status: ${response.statusCode}');
 
-    // ❗ Access token wygasł
+    // ⛔ ACCESS TOKEN WYGASŁ
     if (response.statusCode == 401) {
-      print('[API] 401 received → trying refresh token');
+      print('[API] 401 → trying refresh token');
 
       final refreshed = await _refreshToken();
 
       if (!refreshed) {
-        print('[API] Refresh failed → clearing tokens');
-        await storage.clear();
-        throw Exception('Session expired');
+        print('[API] Refresh failed');
+        throw Exception('Unauthorized');
       }
 
-      final newAccessToken = await storage.getAccessToken();
-      print('[API] Retrying request with new token');
-
-      response = await requestWithToken(request, newAccessToken!);
+      print('[API] Retry original request');
+      response = await request();
     }
 
     return response;
   }
 
-  Future<http.Response> requestWithToken(
-    Future<http.Response> Function() request,
-    String token,
-  ) {
-    return request().then((res) {
-      return http.Response(res.body, res.statusCode, headers: res.headers);
-    });
-  }
-
   Future<bool> _refreshToken() async {
     final refreshToken = await storage.getRefreshToken();
+    if (refreshToken == null) return false;
 
-    if (refreshToken == null) {
-      print('[API] No refresh token');
-      return false;
-    }
-
-    print('[API] Refreshing token');
-
-    final res = await http.post(
+    final response = await http.post(
       Uri.parse('$baseUrl/api/Auth/refresh-token'),
       headers: {'Content-Type': 'application/json'},
       body: jsonEncode({'token': refreshToken}),
     );
 
-    print('[API] Refresh status: ${res.statusCode}');
+    if (response.statusCode != 200) {
+      return false;
+    }
 
-    if (res.statusCode != 200) return false;
+    final data = jsonDecode(response.body);
 
-    final data = jsonDecode(res.body);
+    await storage.saveTokens(
+      accessToken: data['accessToken'],
+      refreshToken: data['refreshToken'],
+    );
 
-    await storage.saveAccessToken(data['accessToken']);
-    await storage.saveRefreshToken(data['refreshToken']);
-
-    print('[API] Tokens refreshed');
-
+    print('[API] Token refreshed');
     return true;
   }
 }
