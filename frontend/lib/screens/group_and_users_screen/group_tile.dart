@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:frontend/core/api/api_client.dart';
+import 'package:frontend/providers/group_details_provider.dart';
+import 'package:frontend/screens/group_details/group_details_dialog.dart';
+import 'package:frontend/services/group_details_service.dart';
 import 'package:provider/provider.dart';
 import 'package:frontend/models/group.dart';
 import 'package:frontend/providers/groups_provider.dart';
@@ -29,8 +33,17 @@ class GroupTile extends StatelessWidget {
           ],
         ),
         onTap: () {
-          // TODO: GroupDetailsScreen
-          print('[GROUP TILE] open group id=${group.id}');
+          showDialog(
+            context: context,
+            barrierDismissible: true,
+            builder: (_) => ChangeNotifierProvider(
+              create: (ctx) => GroupDetailsProvider(
+                service: GroupDetailsService(api: ctx.read<ApiClient>()),
+                groupId: group.id,
+              )..fetch(),
+              child: const GroupDetailsDialog(),
+            ),
+          );
         },
       ),
     );
