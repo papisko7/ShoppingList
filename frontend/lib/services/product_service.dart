@@ -17,24 +17,17 @@ class ProductService {
   Future<Product> create({
     required String productName,
     required int categoryId,
-    String? categoryName, // backend i tak zwraca categoryName w odpowiedzi
-    int?
-    shoppingListId, // jeśli backend tego wymaga dla add-to-list, tu nie używamy
-    String? quantity,
   }) async {
     final res = await api.post(
       '/api/Products/create-product',
-      body: {
-        'productName':
-            productName, // UWAGA: u Ciebie DTO ma productName (z obrazka)
-        'categoryName': categoryName ?? '',
-        'categoryId': categoryId,
-        // 'shoppingListId': shoppingListId, // jeśli endpoint wymaga – dopisz
-        // 'quantity': quantity,
-      },
+      body: {'name': productName, 'categoryId': categoryId},
     );
+    print(res.body);
 
-    if (res.statusCode != 200) throw Exception('create product failed');
+    if (res.statusCode != 200) {
+      throw Exception('create product failed: ${res.body}');
+    }
+
     return Product.fromJson(jsonDecode(res.body));
   }
 

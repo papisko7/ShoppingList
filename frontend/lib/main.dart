@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/providers/categories_provider.dart';
+import 'package:frontend/providers/categories_selection_provider.dart';
 import 'package:frontend/providers/products_provider.dart';
 import 'package:frontend/services/category_service.dart';
 import 'package:frontend/services/product_service.dart';
@@ -44,6 +45,7 @@ void main() {
         ChangeNotifierProvider(
           create: (_) => CategoriesProvider(service: categoryService)..fetch(),
         ),
+        ChangeNotifierProvider(create: (_) => CategoriesSelectionProvider()),
         ChangeNotifierProvider(
           create: (_) => ProductsProvider(service: productService)..fetch(),
         ),

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/providers/products_provider.dart';
+import 'package:frontend/providers/categories_selection_provider.dart';
 import 'package:provider/provider.dart';
 
 import 'product_tile.dart';
@@ -11,6 +12,9 @@ class ProductsPanel extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final prov = context.watch<ProductsProvider>();
+    final selectedCategoryId = context
+        .watch<CategoriesSelectionProvider>()
+        .selectedCategoryId;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -28,24 +32,32 @@ class ProductsPanel extends StatelessWidget {
         ),
         const SizedBox(height: 16),
 
-        Expanded(child: _buildList(prov)),
+        Expanded(child: _buildList(prov, selectedCategoryId)),
       ],
     );
   }
 
-  Widget _buildList(ProductsProvider prov) {
-    if (prov.isLoading) return const Center(child: CircularProgressIndicator());
-    if (prov.error != null)
-      return Center(
-        child: Text(prov.error!, style: const TextStyle(color: Colors.red)),
-      );
-    if (prov.products.isEmpty)
+  Widget _buildList(ProductsProvider prov, int? selectedCategoryId) {
+    if (prov.isLoading) {
+      return const Center(child: CircularProgressIndicator());
+    }
+
+    if (selectedCategoryId == null) {
+      return const Center(child: Text('Wybierz kategorię'));
+    }
+
+    final products = prov.products
+        .where((p) => p.categoryId == selectedCategoryId)
+        .toList();
+
+    if (products.isEmpty) {
       return const Center(child: Text('Brak produktów'));
+    }
 
     return ListView.separated(
-      itemCount: prov.products.length,
+      itemCount: products.length,
       separatorBuilder: (_, __) => const SizedBox(height: 8),
-      itemBuilder: (_, i) => ProductTile(product: prov.products[i]),
+      itemBuilder: (_, i) => ProductTile(product: products[i]),
     );
   }
 }
