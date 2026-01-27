@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:frontend/providers/group_details_provider.dart';
+import 'package:frontend/services/group_details_service.dart';
 import 'package:provider/provider.dart';
 
 import 'app.dart';
@@ -21,12 +23,13 @@ void main() {
   );
 
   final authService = AuthService(api: apiClient, storage: tokenStorage);
-
   final groupService = GroupService(apiClient);
 
   runApp(
     MultiProvider(
       providers: [
+        Provider<ApiClient>.value(value: apiClient),
+
         ChangeNotifierProvider(
           create: (_) => AuthProvider(authService: authService)..init(),
         ),
