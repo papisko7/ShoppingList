@@ -8,6 +8,15 @@ class WebTokenStorage implements TokenStorage {
   web.Storage get _storage => web.window.localStorage;
 
   @override
+  Future<void> saveTokens({
+    required String accessToken,
+    required String refreshToken,
+  }) async {
+    await saveAccessToken(accessToken);
+    await saveRefreshToken(refreshToken);
+  }
+
+  @override
   Future<void> saveAccessToken(String token) async {
     _storage.setItem(_accessTokenKey, token);
   }

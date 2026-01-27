@@ -20,8 +20,10 @@ class AuthService {
     }
 
     final data = jsonDecode(res.body);
-    await storage.saveAccessToken(data['accessToken']);
-    await storage.saveRefreshToken(data['refreshToken']);
+    await storage.saveTokens(
+      accessToken: data['accessToken'],
+      refreshToken: data['refreshToken'],
+    );
   }
 
   Future<void> register(String username, String password) async {
@@ -75,8 +77,10 @@ class AuthService {
     }
 
     final data = jsonDecode(res.body);
-    await storage.saveAccessToken(data['accessToken']);
-    await storage.saveRefreshToken(data['refreshToken']);
+    await storage.saveTokens(
+      accessToken: data['accessToken'],
+      refreshToken: data['refreshToken'],
+    );
   }
 
   Future<void> logout() async {
