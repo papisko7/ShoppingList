@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:frontend/screens/group_and_users_screen/create_group_fab.dart';
-import 'package:frontend/screens/group_and_users_screen/groups_list.dart';
-import 'package:frontend/screens/group_and_users_screen/join_group_fab.dart';
+import 'package:frontend/screens/group_and_users/create_group_fab.dart';
+import 'package:frontend/screens/group_and_users/groups_list.dart';
+import 'package:frontend/screens/group_and_users/join_group_fab.dart';
 import 'package:frontend/ui/sidebar/sidebar_layout.dart';
 import 'package:frontend/ui/top_app_bar/top_app_bar.dart';
 import 'package:provider/provider.dart';

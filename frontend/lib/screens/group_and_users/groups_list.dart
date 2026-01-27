@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:frontend/screens/group_and_users_screen/group_tile.dart';
+import 'package:frontend/screens/group_and_users/group_tile.dart';
 import 'package:provider/provider.dart';
 import 'package:frontend/providers/groups_provider.dart';
 
