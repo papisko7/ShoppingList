@@ -4,7 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:frontend/providers/auth_provider.dart';
 import 'package:frontend/screens/categories_and_products_screen.dart';
 import 'package:frontend/screens/dashboard_screen.dart';
-import 'package:frontend/screens/groups_and_users_screen.dart';
+import 'package:frontend/screens/group_and_users_screen/groups_and_users_screen.dart';
 import 'package:frontend/screens/login_screen.dart';
 import 'package:frontend/screens/register_screen.dart';
 import 'package:frontend/screens/shopping_list_screen.dart';
