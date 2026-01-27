@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/core/api/api_client.dart';
 import 'package:frontend/providers/group_details_provider.dart';
-import 'package:frontend/screens/group_details/group_details_dialog.dart';
+import 'package:frontend/screens/group_and_users/group_details/group_details_dialog.dart';
 import 'package:frontend/services/group_details_service.dart';
 import 'package:provider/provider.dart';
 import 'package:frontend/models/group.dart';
